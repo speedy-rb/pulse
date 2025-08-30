@@ -4,6 +4,10 @@ const express = require('express');
 
 const app = express();
 
+app.get('/api/index', (req, res) => {
+    res.json({ message: "Hello from Express 👋" });
+});
+
 app.listen(process.env.PORT, () => {
     console.log(`listening on ${process.env.PORT}`);
 });
