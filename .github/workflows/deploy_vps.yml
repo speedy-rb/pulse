@@ -1,0 +1,27 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd ~/repos/pulse || git clone https://github.com/speedy-rb/pulse.git ~/repos/pulse
+            cd ~/repos/pulse
+            git pull
+            cd frontend && npm ci && npm run build
+            rsync -a dist/ /var/www/pulse/
+            cd ../backend && npm ci
+            pm2 restart app || pm2 start app.js --name app
