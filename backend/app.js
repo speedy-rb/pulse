@@ -5,7 +5,7 @@ const express = require('express');
 const app = express();
 
 app.get('/api/index', (req, res) => {
-    res.json({ message: "Hello from Express 👋" });
+    res.json({ message: "Hello from Express v2 👋" });
 });
 
 app.listen(process.env.PORT, () => {
