@@ -1,7 +1,11 @@
-import Weekly from './components/Weekly/Weekly'
+import Header from './components/Header/Header'
+import { Outlet } from "react-router-dom";
 
 function App() {
-  return <Weekly/>
+  return <>
+    <Header />
+    <Outlet />
+  </>
 }
 
 export default App

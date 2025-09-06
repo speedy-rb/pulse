@@ -1,0 +1,13 @@
+.navList {
+    background-color: rebeccapurple;
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+    padding: 10px;
+}
+
+.linkElem {
+    background-color: cyan;
+    padding: 5px 20px;
+    border-radius: 10px;
+}

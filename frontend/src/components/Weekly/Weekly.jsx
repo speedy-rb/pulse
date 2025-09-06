@@ -1,4 +1,4 @@
-import styles from "./Weekly.module.css";
+import styles from './Weekly.module.css';
 import imgSrc1 from '../../assets/08312025/518235653_18511130893045941_5661599903389406608_n.jpg'
 import imgSrc2 from '../../assets/08312025/516818439_18349122532084215_6804311255893000883_n.jpg'
 import imgSrc3 from '../../assets/08312025/506348862_18071130554479484_4617004184185470533_n.jpg'
@@ -12,7 +12,6 @@ function Weekly() {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     return (
         <div>
-            <div className={styles.header}>Header</div>
             <div className={styles.calendar}>
                 <div className={styles.calendarTimeSlots}>time slots</div>
                 {days.map((day, i) => (
