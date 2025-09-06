@@ -1,0 +1,19 @@
+.topLevelContainer {
+    padding: 0px 20px;
+}
+.galleryGrid {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, var(--card-min, 220px));
+    gap: 16px;
+}
+.mediaCard {
+    /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 4px 6px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+.media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
