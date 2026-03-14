@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: rgb(63, 255, 159);
 }
 ul {
   list-style: none;
