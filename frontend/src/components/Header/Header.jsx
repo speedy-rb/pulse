@@ -5,7 +5,7 @@ function Header() {
     return <>
       <nav>
         <ul className={styles.navList}>
-            <li className={styles.linkElem}><Link to="/gallery">Gallery</Link></li>
+            <li className={styles.linkElem}><Link to="/gallery">Gallerry</Link></li>
             <li className={styles.linkElem}><Link to="/calendar">Calender</Link></li>
         </ul>
       </nav>
