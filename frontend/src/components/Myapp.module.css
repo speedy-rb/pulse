@@ -1,0 +1,32 @@
+/* Header */
+.header {
+    position: sticky;
+    top: 0;
+    /* width: 200px; */
+    background-color: green;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.appHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.appHeaderLeft {
+    display: flex;
+}
+
+.entityLabelHeader {
+    display: flex;
+}
+
+/* Body (after header) */
+.entityRow {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    border: solid red 3px;
+}
