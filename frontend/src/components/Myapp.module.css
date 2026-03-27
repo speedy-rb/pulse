@@ -1,10 +1,14 @@
+:root {
+    --label-column-width: 80px;
+    --num-entity-columns: 3;
+}
+
 /* Header */
 .header {
     position: sticky;
     top: 0;
-    /* width: 200px; */
     background-color: green;
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -25,8 +29,20 @@
 
 /* Body (after header) */
 .entityRow {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: var(--label-column-width) repeat(var(--num-entity-columns), 1fr);
+    /* justify-content: space-between; */
     height: 100px;
     border: solid red 3px;
+}
+
+.cell {
+    border-right: 1px solid #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.row > .cell:last-child {
+    border-right: none;
 }
