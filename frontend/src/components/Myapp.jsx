@@ -27,7 +27,11 @@ function Myapp() {
       <div className={styles.header}>
         <div className={styles.appHeader}>
           <div className={styles.appHeaderLeft}>
-            <div>menu</div>
+            <div className={styles.hamburger}>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
             <div>month</div>
           </div>
           <div className={styles.appHeaderRight}>

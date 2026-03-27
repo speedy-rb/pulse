@@ -23,6 +23,22 @@
     display: flex;
 }
 
+.hamburger {
+    width: 24px;
+    /* height: 18px; */
+    padding: 5px 2px;
+    gap: 3px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.hamburger > div {
+    width: 100%;
+    height: 2px;
+    background: black;
+}
+
 .entityLabelHeader {
     display: flex;
 }
