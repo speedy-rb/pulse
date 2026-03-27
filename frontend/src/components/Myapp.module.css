@@ -8,13 +8,20 @@
     --gap-between-hamburger-and-month-name: 20px;
     --gap-between-month-name-and-arrow: 3px;
     --arrow-size: 10px;
+    --text-color: rgb(249, 249, 249);
+    --header-background-color: #363638;
+    --grid-line-color: #333638;
+}
+
+* {
+    color: var(--text-color);
 }
 
 /* Header */
 .header {
     position: sticky;
     top: 0;
-    background-color: green;
+    background-color: var(--header-background-color);
     display: flex;
     flex-direction: column;
     gap: var(--header-gap-between-rows);
@@ -44,7 +51,7 @@
 .hamburger > div {
     width: 100%;
     height: 2px;
-    background: black;
+    background: var(--text-color);
 }
 
 .monthArrow {
@@ -57,6 +64,10 @@
     height: var(--arrow-size);
     width: var(--arrow-size);
     transform: rotate(90deg);
+}
+
+.arrow polygon {
+    fill: var(--text-color);
 }
 
 .pfp {
@@ -76,7 +87,7 @@
 .entityRow {
     display: grid;
     grid-template-columns: var(--label-column-width) repeat(var(--num-entity-columns), 1fr);
-    border: solid red 3px;
+    /* border: solid #333638 3px; */
 }
 
 .entityRow {
@@ -84,7 +95,8 @@
 }
 
 .cell {
-    border-right: 1px solid #999;
+    border-right: 2px solid var(--grid-line-color);
+    border-top: 2px solid var(--grid-line-color);
     display: flex;
     align-items: center;
     justify-content: center;

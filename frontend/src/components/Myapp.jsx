@@ -34,7 +34,6 @@ function Myapp() {
             </div>
             <div className={styles.monthArrow}>
               <div>month</div>
-              {/* <div className={styles.arrow}>▸</div> */}
               <svg className={styles.arrow} viewBox="0 0 10 10" width="10" height="10">
                 <polygon points="0,0 10,5 0,10" fill="black" />
               </svg>

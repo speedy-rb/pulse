@@ -1,6 +1,17 @@
-body {
-  background-color: rgb(220, 220, 220);
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter.woff2');
 }
+
+:root {
+  --body-background-color: #262628;
+}
+
+body {
+  background-color: var(--body-background-color);
+  font-family: Inter;
+}
+
 * {
   margin: 0;
   padding: 0;
