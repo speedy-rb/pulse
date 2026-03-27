@@ -1,6 +1,13 @@
 :root {
-    --label-column-width: 80px;
+    --label-column-width: 70px;
     --num-entity-columns: 3;
+    --pfp-size: 20px;
+    --pfp-right-margin: 4px;
+    --app-header-padding: 10px 10px 0px 10px;
+    --header-gap-between-rows: 7px;
+    --gap-between-hamburger-and-month-name: 20px;
+    --gap-between-month-name-and-arrow: 3px;
+    --arrow-size: 10px;
 }
 
 /* Header */
@@ -8,38 +15,26 @@
     position: sticky;
     top: 0;
     background-color: green;
-    /* padding: 10px 20px; */
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: var(--header-gap-between-rows);
 }
 
 .appHeader {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding: var(--app-header-padding);
 }
 
 .appHeaderLeft {
     display: flex;
-    gap: 20px;
-}
-
-.monthArrow {
-    display: flex;
-    gap: 3px;
+    gap: var(--gap-between-hamburger-and-month-name);
     align-items: center;
-}
-
-.arrow {
-    height: 10px;
-    width: 10px;
-    transform: rotate(90deg);
 }
 
 .hamburger {
     width: 24px;
-    /* height: 18px; */
-    padding: 5px 2px;
     gap: 3px;
     display: flex;
     flex-direction: column;
@@ -52,17 +47,40 @@
     background: black;
 }
 
+.monthArrow {
+    display: flex;
+    gap: var(--gap-between-month-name-and-arrow);
+    align-items: center;
+}
+
+.arrow {
+    height: var(--arrow-size);
+    width: var(--arrow-size);
+    transform: rotate(90deg);
+}
+
+.pfp {
+    height: var(--pfp-size);
+    width: var(--pfp-size);
+    border-radius: 50%;
+    margin-right: var(--pfp-right-margin);
+    background: yellow;
+}
+
 .entityLabelHeader {
     display: flex;
 }
 
 /* Body (after header) */
+.entityLabelRow,
 .entityRow {
     display: grid;
     grid-template-columns: var(--label-column-width) repeat(var(--num-entity-columns), 1fr);
-    /* justify-content: space-between; */
-    height: 100px;
     border: solid red 3px;
+}
+
+.entityRow {
+    height: 200px;
 }
 
 .cell {

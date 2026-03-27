@@ -41,10 +41,10 @@ function Myapp() {
             </div>
           </div>
           <div className={styles.appHeaderRight}>
-            <div>profile</div>
+            <div className={styles.pfp}></div>
           </div>
         </div>
-        <div className={styles.entityRow}>
+        <div className={styles.entityLabelRow}>
           <div className={styles.cell}></div>
           {entityData.map(entity => (
             <div className={styles.cell} key={entity.id}>{entity.date}</div>
