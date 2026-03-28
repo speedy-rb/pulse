@@ -74,7 +74,7 @@ function Myapp() {
           ))}
         </div>
       </div>
-      <div className="body">
+      <div className={styles.body}>
         {fieldsToShow.map(field => (
           <div key={field} className={styles.entityRow}>
             <div className={styles.cell}>{field}</div>

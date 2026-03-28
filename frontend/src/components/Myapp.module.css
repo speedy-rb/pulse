@@ -4,12 +4,15 @@
 
 .appShell {
     height: 100dvh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 /* Header */
 .header {
-    position: sticky;
+    flex: 1 1 auto;
+    /* position: sticky; */
     top: 0;
     background-color: var(--header-background-color);
     display: flex;
@@ -96,6 +99,13 @@
 }
 
 /* Body (after header) */
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .entityLabelRow,
 .entityRow {
     display: grid;
