@@ -2,46 +2,47 @@ import { useState } from "react";
 import styles from './Myapp.module.css';
 import dayjs from 'dayjs';
 
-const entityData = [
-  {
-    'label': 'num1',
-    'date': "2026-03-26",
-    'img': 'coolpic',
-    'id': 1
-  },
-  {
-    'label': 'num2',
-    'date': "2026-03-27",
-    'img': 'coolpic2',
-    'id': 2
-  },
-  {
-    'label': 'num3',
-    'date': "2026-03-28",
-    'img': 'coolpic3',
-    'id': 3
-  },
-]
-const fields =  Object.keys(entityData[0]);
+const today = dayjs();
 
-function getDaysInMonth(dateStr) {
+function getDaysInMonth(dateObj) {
   const days = [];
-  const startDate = dayjs(dateStr).startOf("month");
+  const startDate = dayjs(dateObj).startOf("month");
   const daysInMonth = startDate.daysInMonth();
   for (let i = 0; i < daysInMonth; i++) {
     days.push(startDate.add(i, "day"))
   }
   return days;
 }
-const days = getDaysInMonth("2026-03-28");
-const firstDay = days[0];
-const firstDayColumn = firstDay.day() + 1;
+
+function createEntityData(initialDate){
+  const entityData = [];
+  for (let i = 0; i < 3; i++) {
+    const curDate = initialDate.add(i, 'day');
+    const curObj = {
+      'label': `num${i}`,
+      'date': curDate.format("MM-DD-YYYY"),
+      'img': `coolpic${i}`,
+      'id': i
+    }
+    entityData.push(curObj);
+  }
+  return entityData
+}
 
 function Myapp() {
   const [isCalendarExpanded, setIsCalendarExpanded] = useState(false);
+  const [activeDate, setCurrentDate] = useState(today);
+
   const toggleCalendar = () => {
     setIsCalendarExpanded(prev => !prev);
   }
+
+  const days = getDaysInMonth(activeDate);
+  const firstDay = days[0];
+  const firstDayColumn = firstDay.day() + 1;
+
+  const entityData = createEntityData(activeDate);
+  const fields =  Object.keys(entityData[0]);
 
   return <>
     <div className={styles.header}>
@@ -74,8 +75,11 @@ function Myapp() {
           </div>
           <div className={styles.calendarDaysGrid}>
               {days.map((day, i) => (
-                <div key={i} className={styles.calendarDaysGridCell}
+                <div
+                  key={day.format("YYYY-MM-DD")}
+                  className={styles.calendarDaysGridCell}
                   style={i === 0 ? { gridColumnStart: firstDayColumn} : undefined}
+                  onClick={() => setCurrentDate(day)}
                 >
                   {day.date()}
                 </div>
