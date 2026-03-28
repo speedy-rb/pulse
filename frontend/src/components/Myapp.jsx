@@ -88,7 +88,9 @@ function Myapp() {
           </div>
         </div>
       )}
-      <div className={styles.entityLabelRow}>
+      <div className={`${styles.entityLabelRow} ${
+          isCalendarExpanded ? styles.entityLabelRowExpanded : ""
+        }`}>
         <div className={styles.cell}></div>
         {entityData.map(entity => (
           <div className={styles.cell} key={entity.id}>

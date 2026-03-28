@@ -12,6 +12,7 @@
     --text-color-secondary: rgb(214, 214, 214);
     --header-background-color: #363638;
     --grid-line-color: #333638;
+    --body-background-color: #262628; /* manually copied from index.css */
 }
 
 * {
@@ -85,8 +86,9 @@
     background: yellow;
 }
 
-.entityLabelHeader {
-    display: flex;
+.entityLabelRowExpanded {
+    background-color: var(--body-background-color);
+    padding-top: 8px;
 }
 
 .dayHeaderContainer {
