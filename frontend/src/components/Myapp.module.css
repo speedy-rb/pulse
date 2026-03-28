@@ -2,6 +2,13 @@
     color: var(--text-color-primary);
 }
 
+.appShell {
+    height: 100dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain
+}
+
 /* Header */
 .header {
     position: sticky;
