@@ -1,0 +1,43 @@
+/* calendar in header */
+.calendarHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+}
+.calendarDayLabelRow {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendarDaysGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: 30px;
+}
+
+.calendarDayLabelCell,
+.calendarDaysGridCell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.calendarDayLabelCell {
+    color: var(--text-color-secondary);
+    font-size: 12px;
+}
+
+.calendarDaysGridCell {
+    font-size: var(--font-size-calendar-module-day-numbers);
+}
+
+.activeCalendarDay {
+    background-color: rgb(143, 187, 224);
+    height: var(--active-day-circle-diameter-calendar);
+    width: var(--active-day-circle-diameter-calendar);
+    border-radius: 50%;
+    color: var(--header-background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

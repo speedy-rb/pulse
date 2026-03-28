@@ -1,18 +1,7 @@
 import { useState } from "react";
 import styles from './Myapp.module.css';
 import dayjs from 'dayjs';
-
-const today = dayjs();
-
-function getDaysInMonth(dateObj) {
-  const days = [];
-  const startDate = dayjs(dateObj).startOf("month");
-  const daysInMonth = startDate.daysInMonth();
-  for (let i = 0; i < daysInMonth; i++) {
-    days.push(startDate.add(i, "day"))
-  }
-  return days;
-}
+import Calendar from './Calendar/Calendar';
 
 function createEntityData(initialDate){
   const entityData = [];
@@ -30,17 +19,14 @@ function createEntityData(initialDate){
   return entityData
 }
 
+const today = dayjs();
 function Myapp() {
   const [isCalendarExpanded, setIsCalendarExpanded] = useState(false);
-  const [activeDate, setCurrentDate] = useState(today);
+  const [activeDate, setActiveDate] = useState(today);
 
   const toggleCalendar = () => {
     setIsCalendarExpanded(prev => !prev);
   }
-
-  const days = getDaysInMonth(activeDate);
-  const firstDay = days[0];
-  const firstDayColumn = firstDay.day() + 1;
 
   const entityData = createEntityData(activeDate);
   const fieldsToShow =  ['label','date','img','id'];
@@ -68,27 +54,10 @@ function Myapp() {
         </div>
       </div>
       {isCalendarExpanded && (
-        <div className={styles.calendarHeader}>
-          <div className={styles.calendarDayLabelRow}>
-            {Array.from(["S", "M", "T", "W", "T", "F", "S"]).map((day, i) => (
-              <div key={i} className={styles.calendarDayLabelCell}>{day}</div>
-            ))}
-          </div>
-          <div className={styles.calendarDaysGrid}>
-              {days.map((day, i) => (
-                <div
-                  key={day.format("YYYY-MM-DD")}
-                  className={styles.calendarDaysGridCell}
-                  style={i === 0 ? { gridColumnStart: firstDayColumn} : undefined}
-                  onClick={() => setCurrentDate(day)}
-                >
-                  <div className={day.isSame(activeDate, "day") ? styles.activeCalendarDay : ""}>
-                    {day.date()}
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
+        <Calendar
+          activeDate={activeDate}
+          setActiveDate={setActiveDate}
+        />
       )}
       <div className={`${styles.entityLabelRow} ${
           isCalendarExpanded ? styles.entityLabelRowExpanded : ""

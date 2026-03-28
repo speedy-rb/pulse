@@ -7,6 +7,23 @@
 
 :root {
   --body-background-color: #262628;
+  --label-column-width: 70px;
+  --num-entity-columns: 3;
+  --pfp-size: 20px;
+  --pfp-right-margin: 4px;
+  --app-header-padding: 5px 10px 0px 10px;
+  --header-gap-between-rows: 7px;
+  --gap-between-hamburger-and-month-name: 20px;
+  --gap-between-month-name-and-arrow: 3px;
+  --arrow-size: 10px;
+  --text-color-primary: rgb(249, 249, 249);
+  --text-color-secondary: rgb(214, 214, 214);
+  --header-background-color: #363638;
+  --grid-line-color: #333638;
+  --font-size-calendar-module-day-numbers: 12px;
+  --active-day-circle-diameter-calendar: 24px;
+  --font-size-day-of-week-entity-label-header: 10px;
+  --font-size-day-number-entity-label-header: 15px;
 }
 
 body {

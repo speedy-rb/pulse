@@ -1,24 +1,3 @@
-:root {
-    --label-column-width: 70px;
-    --num-entity-columns: 3;
-    --pfp-size: 20px;
-    --pfp-right-margin: 4px;
-    --app-header-padding: 5px 10px 0px 10px;
-    --header-gap-between-rows: 7px;
-    --gap-between-hamburger-and-month-name: 20px;
-    --gap-between-month-name-and-arrow: 3px;
-    --arrow-size: 10px;
-    --text-color-primary: rgb(249, 249, 249);
-    --text-color-secondary: rgb(214, 214, 214);
-    --header-background-color: #363638;
-    --grid-line-color: #333638;
-    --body-background-color: #262628; /* manually copied from index.css */
-    --font-size-calendar-module-day-numbers: 12px;
-    --active-day-circle-diameter-calendar: 24px;
-    --font-size-day-of-week-entity-label-header: 10px;
-    --font-size-day-number-entity-label-header: 15px;
-}
-
 * {
     color: var(--text-color-primary);
 }
@@ -109,50 +88,6 @@
 
 .dayHeaderDay {
     font-size: var(--font-size-day-number-entity-label-header);
-}
-
-/* calendar in header */
-.calendarHeader {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 6px;
-}
-.calendarDayLabelRow {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-}
-
-.calendarDaysGrid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: 30px;
-}
-
-.calendarDayLabelCell,
-.calendarDaysGridCell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.calendarDayLabelCell {
-    color: var(--text-color-secondary);
-    font-size: 12px;
-}
-
-.calendarDaysGridCell {
-    font-size: var(--font-size-calendar-module-day-numbers);
-}
-
-.activeCalendarDay {
-    background-color: rgb(143, 187, 224);
-    height: var(--active-day-circle-diameter-calendar);
-    width: var(--active-day-circle-diameter-calendar);
-    border-radius: 50%;
-    color: var(--header-background-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* Body (after header) */
