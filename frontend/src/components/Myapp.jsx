@@ -21,6 +21,7 @@ function createEntityData(initialDate){
     const curObj = {
       'label': `num${i}`,
       'date': curDate.format("MM-DD-YYYY"),
+      'dateObj': curDate,
       'img': `coolpic${i}`,
       'id': i
     }
@@ -42,7 +43,7 @@ function Myapp() {
   const firstDayColumn = firstDay.day() + 1;
 
   const entityData = createEntityData(activeDate);
-  const fields =  Object.keys(entityData[0]);
+  const fieldsToShow =  ['label','date','img','id'];
 
   return <>
     <div className={styles.header}>
@@ -90,12 +91,17 @@ function Myapp() {
       <div className={styles.entityLabelRow}>
         <div className={styles.cell}></div>
         {entityData.map(entity => (
-          <div className={styles.cell} key={entity.id}>{entity.date}</div>
+          <div className={styles.cell} key={entity.id}>
+            <div className={styles.dayHeaderContainer}>
+              <div className={styles.dayHeaderMonth}>{entity.dateObj.format('ddd').toUpperCase()}</div>
+              <div className={styles.dayHeaderDay}>{entity.dateObj.date()}</div>
+            </div>
+          </div>
         ))}
       </div>
     </div>
     <div className="body">
-      {fields.map(field => (
+      {fieldsToShow.map(field => (
         <div key={field} className={styles.entityRow}>
           <div className={styles.cell}>{field}</div>
           {entityData.map(entity => (

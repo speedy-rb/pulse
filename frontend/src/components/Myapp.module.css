@@ -3,7 +3,7 @@
     --num-entity-columns: 3;
     --pfp-size: 20px;
     --pfp-right-margin: 4px;
-    --app-header-padding: 10px 10px 0px 10px;
+    --app-header-padding: 5px 10px 0px 10px;
     --header-gap-between-rows: 7px;
     --gap-between-hamburger-and-month-name: 20px;
     --gap-between-month-name-and-arrow: 3px;
@@ -87,6 +87,23 @@
 
 .entityLabelHeader {
     display: flex;
+}
+
+.dayHeaderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 10px;
+}
+
+.dayHeaderMonth {
+    color: var(--text-color-secondary);
+    font-size: 10px;
+}
+
+.dayHeaderDay {
+    font-size: 15px;
 }
 
 /* calendar in header */
