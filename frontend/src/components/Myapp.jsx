@@ -38,26 +38,34 @@ const firstDay = days[0];
 const firstDayColumn = firstDay.day() + 1;
 
 function Myapp() {
-    return <>
-      <div className={styles.header}>
-        <div className={styles.appHeader}>
-          <div className={styles.appHeaderLeft}>
-            <div className={styles.hamburger}>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-            <div className={styles.monthArrow}>
-              <div>month</div>
-              <svg className={styles.arrow} viewBox="0 0 10 10" width="10" height="10">
-                <polygon points="0,0 10,5 0,10" fill="black" />
-              </svg>
-            </div>
+  const [isCalendarExpanded, setIsCalendarExpanded] = useState(false);
+  const toggleCalendar = () => {
+    setIsCalendarExpanded(prev => !prev);
+  }
+
+  return <>
+    <div className={styles.header}>
+      <div className={styles.appHeader}>
+        <div className={styles.appHeaderLeft}>
+          <div className={styles.hamburger}>
+            <div></div>
+            <div></div>
+            <div></div>
           </div>
-          <div className={styles.appHeaderRight}>
-            <div className={styles.pfp}></div>
+          <div className={styles.monthArrow} onClick={toggleCalendar}>
+            <div>month</div>
+            <svg
+              className={`${styles.arrow} ${isCalendarExpanded ? styles.arrowExpanded : ""}`}
+              viewBox="0 0 10 10" width="10" height="10">
+              <polygon points="0,0 10,5 0,10" fill="black" />
+            </svg>
           </div>
         </div>
+        <div className={styles.appHeaderRight}>
+          <div className={styles.pfp}></div>
+        </div>
+      </div>
+      {isCalendarExpanded && (
         <div className={styles.calendarHeader}>
           <div className={styles.calendarDayLabelRow}>
             {Array.from(["S", "M", "T", "W", "T", "F", "S"]).map((day, i) => (
@@ -74,32 +82,33 @@ function Myapp() {
               ))}
           </div>
         </div>
-        <div className={styles.entityLabelRow}>
-          <div className={styles.cell}></div>
-          {entityData.map(entity => (
-            <div className={styles.cell} key={entity.id}>{entity.date}</div>
-          ))}
-        </div>
-      </div>
-      <div className="body">
-        {fields.map(field => (
-          <div key={field} className={styles.entityRow}>
-            <div className={styles.cell}>{field}</div>
-            {entityData.map(entity => (
-              <div key={`${entity['id']}.${field}`} className={styles.cell}>{entity[field]}</div>
-            ))}
-          </div>
+      )}
+      <div className={styles.entityLabelRow}>
+        <div className={styles.cell}></div>
+        {entityData.map(entity => (
+          <div className={styles.cell} key={entity.id}>{entity.date}</div>
         ))}
-        <div className={styles.entityRow}>
-          <div className={styles.cell}>
-            add new field
-          </div>
+      </div>
+    </div>
+    <div className="body">
+      {fields.map(field => (
+        <div key={field} className={styles.entityRow}>
+          <div className={styles.cell}>{field}</div>
           {entityData.map(entity => (
-            <div className={styles.cell}></div>
+            <div key={`${entity['id']}.${field}`} className={styles.cell}>{entity[field]}</div>
           ))}
         </div>
+      ))}
+      <div className={styles.entityRow}>
+        <div className={styles.cell}>
+          add new field
+        </div>
+        {entityData.map(entity => (
+          <div className={styles.cell}></div>
+        ))}
       </div>
-    </>
+    </div>
+  </>
 }
 
 export default Myapp

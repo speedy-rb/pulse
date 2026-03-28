@@ -64,6 +64,12 @@
     height: var(--arrow-size);
     width: var(--arrow-size);
     transform: rotate(90deg);
+    transition: transform 0.2s ease;
+}
+
+.arrowExpanded {
+    transform: rotate(-90deg);
+    transition: transform 0.2s ease;
 }
 
 .arrow polygon {
