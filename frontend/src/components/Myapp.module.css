@@ -112,7 +112,7 @@
 .calendarHeader {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 4px;
     margin-top: 6px;
 }
 .calendarDayLabelRow {
@@ -123,12 +123,14 @@
 .calendarDaysGrid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: 30px;
 }
 
 .calendarDayLabelCell,
 .calendarDaysGridCell {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .calendarDayLabelCell {
     color: var(--text-color-secondary);
@@ -136,8 +138,18 @@
 }
 
 .calendarDaysGridCell {
-    height: 30px;
     font-size: 12px;
+}
+
+.activeCalendarDay {
+    background-color: rgb(143, 187, 224);
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    color: var(--header-background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Body (after header) */

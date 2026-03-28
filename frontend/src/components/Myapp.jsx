@@ -82,7 +82,9 @@ function Myapp() {
                   style={i === 0 ? { gridColumnStart: firstDayColumn} : undefined}
                   onClick={() => setCurrentDate(day)}
                 >
-                  {day.date()}
+                  <div className={day.isSame(activeDate, "day") ? styles.activeCalendarDay : ""}>
+                    {day.date()}
+                  </div>
                 </div>
               ))}
           </div>
