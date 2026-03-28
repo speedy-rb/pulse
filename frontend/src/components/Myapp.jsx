@@ -113,8 +113,8 @@ function Myapp() {
         <div className={styles.cell}>
           add new field
         </div>
-        {entityData.map(entity => (
-          <div className={styles.cell}></div>
+        {entityData.map((entity, i) => (
+          <div className={styles.cell} key={i}></div>
         ))}
       </div>
     </div>
