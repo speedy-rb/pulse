@@ -11,9 +11,7 @@
 
 /* Header */
 .header {
-    flex: 1 1 auto;
-    /* position: sticky; */
-    top: 0;
+    flex: 0 0 auto;
     background-color: var(--header-background-color);
     display: flex;
     flex-direction: column;
