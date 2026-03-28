@@ -82,6 +82,24 @@
     display: flex;
 }
 
+/* calendar in header */
+.calendarDayLabelRow {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+.calendarDayLabelCell {
+    display: flex;
+    justify-content: center;
+}
+.calendarDaysGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+.calendarDaysGridCell {
+    display: flex;
+    justify-content: center;
+}
+
 /* Body (after header) */
 .entityLabelRow,
 .entityRow {

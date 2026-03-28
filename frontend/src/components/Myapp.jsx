@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from './Myapp.module.css';
+import dayjs from 'dayjs';
 
 const entityData = [
   {
@@ -22,6 +23,20 @@ const entityData = [
   },
 ]
 const fields =  Object.keys(entityData[0]);
+
+function getDaysInMonth(dateStr) {
+  const days = [];
+  const startDate = dayjs(dateStr).startOf("month");
+  const daysInMonth = startDate.daysInMonth();
+  for (let i = 0; i < daysInMonth; i++) {
+    days.push(startDate.add(i, "day"))
+  }
+  return days;
+}
+const days = getDaysInMonth("2026-03-28");
+const firstDay = days[0];
+const firstDayColumn = firstDay.day() + 1;
+
 function Myapp() {
     return <>
       <div className={styles.header}>
@@ -43,6 +58,22 @@ function Myapp() {
             <div className={styles.pfp}></div>
           </div>
         </div>
+        <div className={styles.calendarHeader}>
+          <div className={styles.calendarDayLabelRow}>
+            {Array.from(["S", "M", "T", "W", "T", "F", "S"]).map((day, i) => (
+              <div key={i} className={styles.calendarDayLabelCell}>{day}</div>
+            ))}
+          </div>
+          <div className={styles.calendarDaysGrid}>
+              {days.map((day, i) => (
+                <div key={i} className={styles.calendarDaysGridCell}
+                  style={i === 0 ? { gridColumnStart: firstDayColumn} : undefined}
+                >
+                  {day.date()}
+                </div>
+              ))}
+          </div>
+        </div>
         <div className={styles.entityLabelRow}>
           <div className={styles.cell}></div>
           {entityData.map(entity => (
@@ -50,7 +81,6 @@ function Myapp() {
           ))}
         </div>
       </div>
-
       <div className="body">
         {fields.map(field => (
           <div key={field} className={styles.entityRow}>
