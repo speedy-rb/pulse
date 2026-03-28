@@ -30,11 +30,14 @@
   --calendar-gap-header-body: 4px;
 }
 
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   background-color: var(--body-background-color);
   font-family: Inter;
-  height: 100%;
-  overflow: hidden;
 }
 
 * {
