@@ -31,6 +31,7 @@ function Calendar({ activeDate, setActiveDate }) {
 
   const isDraggingRef = useRef(false);
   const dragStartXRef = useRef(0);
+  const dragStartTimeRef = useRef(0);
   const snapTargetRef = useRef('current');
 
   useLayoutEffect(() => { // avoid flickering dates
@@ -43,6 +44,7 @@ function Calendar({ activeDate, setActiveDate }) {
     e.currentTarget.setPointerCapture(e.pointerId);
     isDraggingRef.current = true;
     dragStartXRef.current = e.clientX;
+    dragStartTimeRef.current = performance.now();
     trackRef.current.style.transition = 'none';
   }
   function handlePointerMove(e) {
@@ -51,18 +53,21 @@ function Calendar({ activeDate, setActiveDate }) {
     trackRef.current.style.transform = `translateX(calc(-100% + ${deltaX}px))`;
   }
   function handlePointerUp(e) {
+    const VELOCITY_THRESHOLD = 0.35
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
+    const time = performance.now() - dragStartTimeRef.current;
     const deltaX = e.clientX - dragStartXRef.current;
+    const velocity = deltaX / time;
     const viewPortWidth = viewportRef.current.offsetWidth;
     const threshold = viewPortWidth / 2;
 
     trackRef.current.style.transition = 'transform 200ms ease';
 
-    if (deltaX > threshold) {
+    if (deltaX > threshold || (deltaX > 0 && Math.abs(velocity) > VELOCITY_THRESHOLD)) {
       snapTargetRef.current = 'prev';
       trackRef.current.style.transform = 'translateX(0%)';
-    } else if (deltaX < -threshold) {
+    } else if (deltaX < -threshold || (deltaX < 0 && Math.abs(velocity) > VELOCITY_THRESHOLD)) {
       snapTargetRef.current = 'next';
       trackRef.current.style.transform = 'translateX(-200%)';
     } else {
