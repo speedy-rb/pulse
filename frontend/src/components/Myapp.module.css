@@ -13,6 +13,10 @@
     --header-background-color: #363638;
     --grid-line-color: #333638;
     --body-background-color: #262628; /* manually copied from index.css */
+    --font-size-calendar-module-day-numbers: 12px;
+    --active-day-circle-diameter-calendar: 24px;
+    --font-size-day-of-week-entity-label-header: 10px;
+    --font-size-day-number-entity-label-header: 15px;
 }
 
 * {
@@ -99,13 +103,13 @@
     margin-bottom: 10px;
 }
 
-.dayHeaderMonth {
+.dayHeaderWeekDay {
     color: var(--text-color-secondary);
-    font-size: 10px;
+    font-size: var(--font-size-day-of-week-entity-label-header);
 }
 
 .dayHeaderDay {
-    font-size: 15px;
+    font-size: var(--font-size-day-number-entity-label-header);
 }
 
 /* calendar in header */
@@ -138,13 +142,13 @@
 }
 
 .calendarDaysGridCell {
-    font-size: 12px;
+    font-size: var(--font-size-calendar-module-day-numbers);
 }
 
 .activeCalendarDay {
     background-color: rgb(143, 187, 224);
-    height: 28px;
-    width: 28px;
+    height: var(--active-day-circle-diameter-calendar);
+    width: var(--active-day-circle-diameter-calendar);
     border-radius: 50%;
     color: var(--header-background-color);
     display: flex;

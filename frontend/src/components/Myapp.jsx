@@ -97,7 +97,7 @@ function Myapp() {
         {entityData.map(entity => (
           <div className={styles.cell} key={entity.id}>
             <div className={styles.dayHeaderContainer}>
-              <div className={styles.dayHeaderMonth}>{entity.dateObj.format('ddd').toUpperCase()}</div>
+              <div className={styles.dayHeaderWeekDay}>{entity.dateObj.format('ddd').toUpperCase()}</div>
               <div className={styles.dayHeaderDay}>{entity.dateObj.date()}</div>
             </div>
           </div>
