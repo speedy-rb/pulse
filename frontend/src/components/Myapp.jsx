@@ -54,7 +54,7 @@ function Myapp() {
             <div></div>
           </div>
           <div className={styles.monthArrow} onClick={toggleCalendar}>
-            <div>month</div>
+            <div>{activeDate.format("MMMM")}</div>
             <svg
               className={`${styles.arrow} ${isCalendarExpanded ? styles.arrowExpanded : ""}`}
               viewBox="0 0 10 10" width="10" height="10">

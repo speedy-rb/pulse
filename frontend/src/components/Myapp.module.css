@@ -8,13 +8,14 @@
     --gap-between-hamburger-and-month-name: 20px;
     --gap-between-month-name-and-arrow: 3px;
     --arrow-size: 10px;
-    --text-color: rgb(249, 249, 249);
+    --text-color-primary: rgb(249, 249, 249);
+    --text-color-secondary: rgb(214, 214, 214);
     --header-background-color: #363638;
     --grid-line-color: #333638;
 }
 
 * {
-    color: var(--text-color);
+    color: var(--text-color-primary);
 }
 
 /* Header */
@@ -51,7 +52,7 @@
 .hamburger > div {
     width: 100%;
     height: 2px;
-    background: var(--text-color);
+    background: var(--text-color-primary);
 }
 
 .monthArrow {
@@ -73,7 +74,7 @@
 }
 
 .arrow polygon {
-    fill: var(--text-color);
+    fill: var(--text-color-primary);
 }
 
 .pfp {
@@ -89,21 +90,35 @@
 }
 
 /* calendar in header */
+.calendarHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 6px;
+}
 .calendarDayLabelRow {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
 }
-.calendarDayLabelCell {
-    display: flex;
-    justify-content: center;
-}
+
 .calendarDaysGrid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
 }
+
+.calendarDayLabelCell,
 .calendarDaysGridCell {
     display: flex;
     justify-content: center;
+}
+.calendarDayLabelCell {
+    color: var(--text-color-secondary);
+    font-size: 12px;
+}
+
+.calendarDaysGridCell {
+    height: 30px;
+    font-size: 12px;
 }
 
 /* Body (after header) */
