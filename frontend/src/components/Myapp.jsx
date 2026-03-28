@@ -64,7 +64,7 @@ function Myapp() {
           </div>
         </div>
         <div className={styles.appHeaderRight}>
-          <div className={styles.pfp}></div>
+          <img src='pfp-64-64.png' className={styles.pfp} />
         </div>
       </div>
       {isCalendarExpanded && (
