@@ -1,0 +1,10 @@
+.calendarViewport {
+    overflow: hidden;
+    touch-action: pan-y;
+    transition: height 220ms ease;
+}
+
+.calendarTrack {
+    display: flex;
+    transform: translateX(-100%);
+}

@@ -1,19 +1,23 @@
 /* calendar in header */
+.monthPanel {
+    flex: 0 0 100%;
+}
 .calendarHeader {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin-top: 6px;
+    gap: var(--calendar-gap-header-body);
+    margin-top: var(--calendar-header-top-margin);
 }
 .calendarDayLabelRow {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    height: var(--calendar-header-height);
 }
 
 .calendarDaysGrid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: 30px;
+    grid-auto-rows: var(--calendar-row-height);
 }
 
 .calendarDayLabelCell,
@@ -31,7 +35,7 @@
     font-size: var(--font-size-calendar-module-day-numbers);
 }
 
-.activeCalendarDay {
+.highlightedCalendarDay {
     background-color: rgb(143, 187, 224);
     height: var(--active-day-circle-diameter-calendar);
     width: var(--active-day-circle-diameter-calendar);

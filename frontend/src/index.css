@@ -24,6 +24,10 @@
   --active-day-circle-diameter-calendar: 24px;
   --font-size-day-of-week-entity-label-header: 10px;
   --font-size-day-number-entity-label-header: 15px;
+  --calendar-header-height: 12px;
+  --calendar-row-height: 30px;
+  --calendar-header-top-margin: 6px;
+  --calendar-gap-header-body: 4px;
 }
 
 body {
