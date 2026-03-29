@@ -1,0 +1,20 @@
+.storyFieldLabelCol {
+    background-color: var(--body-background-color);
+}
+
+.deadZone {
+    background-color: var(--header-background-color);
+}
+
+.deadZoneCalendarExpanded {
+    background-color: var(--body-background-color);
+}
+
+.cell {
+    border-right: 2px solid var(--grid-line-color);
+    border-top: 2px solid var(--grid-line-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color-secondary);
+}

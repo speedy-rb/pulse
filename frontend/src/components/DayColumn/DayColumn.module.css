@@ -1,0 +1,34 @@
+.dayHeaderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background-color: var(--header-background-color);
+}
+
+.dayHeaderContainerCalendarExpanded {
+    background-color: var(--body-background-color);
+}
+
+.dayHeaderWeekDay {
+    color: var(--text-color-secondary);
+    font-size: var(--font-size-day-of-week-entity-label-header);
+}
+
+.dayHeaderDay {
+    font-size: var(--font-size-day-number-entity-label-header);
+}
+
+.cell {
+    border-right: 2px solid var(--grid-line-color);
+    border-top: 2px solid var(--grid-line-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.cell img {
+    max-width: 100%;
+    max-height: 100%;
+}

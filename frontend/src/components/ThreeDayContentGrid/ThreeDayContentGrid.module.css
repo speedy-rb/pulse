@@ -1,58 +1,20 @@
-.entityLabelRow {
-    background-color: var(--header-background-color);
-}
-
-.entityLabelRowExpanded {
-    background-color: var(--body-background-color);
-    padding-top: 8px;
-}
-
-.dayHeaderContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    margin-bottom: 10px;
-}
-
-.dayHeaderWeekDay {
-    color: var(--text-color-secondary);
-    font-size: var(--font-size-day-of-week-entity-label-header);
-}
-
-.dayHeaderDay {
-    font-size: var(--font-size-day-number-entity-label-header);
-}
-
-/* Body (after header) */
-.body {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  background-color: var(--body-background-color);
-}
-
-.entityLabelRow,
-.entityRow {
+.threeDayContentGrid {
     display: grid;
-    grid-template-columns: var(--label-column-width) repeat(var(--num-entity-columns), 1fr);
-    /* border: solid #333638 3px; */
+    grid-template-columns: var(--label-column-width) 1fr;
 }
 
-.entityRow {
-    height: 200px;
+.dayDataViewport {
+    background-color: var(--body-background-color);
+    overflow: hidden;
 }
 
-.cell {
-    border-right: 2px solid var(--grid-line-color);
-    border-top: 2px solid var(--grid-line-color);
+.dayDataTrack {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
-.entityLabelRow > .cell:last-child,
-.entityRow > .cell:last-child {
-    border-right: none;
+.dayDataTrack > * {
+    flex: 1 1 0;
+    min-width: 0;
 }

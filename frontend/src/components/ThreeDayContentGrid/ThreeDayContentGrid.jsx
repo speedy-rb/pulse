@@ -1,62 +1,66 @@
 import { useState } from "react";
 import styles from './ThreeDayContentGrid.module.css';
-import dayjs from 'dayjs';
+import DayColumn from '../DayColumn/DayColumn';
+import StoryFieldLabelCol from '../StoryFieldLabelCol/StoryFieldLabelCol';
 
 function createEntityData(initialDate){
   const entityData = [];
   for (let i = 0; i < 3; i++) {
     const curDate = initialDate.add(i, 'day');
     const curObj = {
-      'label': `num${i}`,
+      'id': i,
+      'img': `ref_story_${i}.jpg`,
+      'notes': `post ${i} details`,
       'date': curDate.format("MM-DD-YYYY"),
-      'dateObj': curDate,
-      'img': `coolpic${i}`,
-      'id': i
+      'dateObj': curDate
     }
     entityData.push(curObj);
   }
   return entityData
 }
 
-const today = dayjs();
-
 function ThreeDayContentGrid({ activeDate, isCalendarExpanded }) {
   const entityData = createEntityData(activeDate);
-  const fieldsToShow =  ['label','date','img','id'];
+  const topRowHeight = '50px';
+  const addNewRowHeight = '100px';
+  const fieldRows = [
+    { key: "img", label: "img", height: '200px'},
+    // { key: "date", label: "date", height: '50px'},
+    { key: "id", label: "id", height: '30px'},
+    { key: "notes", label: "notes", height: '120px'},
+  ]
 
-  return ( <>
-    <div className={styles.body}>
-      <div className={`${styles.entityLabelRow} ${
-          isCalendarExpanded ? styles.entityLabelRowExpanded : ""
-      }`}>
-        <div className={styles.cell}></div>
-        {entityData.map(entity => (
-          <div className={styles.cell} key={entity.id}>
-          <div className={styles.dayHeaderContainer}>
-            <div className={styles.dayHeaderWeekDay}>{entity.dateObj.format('ddd').toUpperCase()}</div>
-            <div className={styles.dayHeaderDay}>{entity.dateObj.date()}</div>
-          </div>
-          </div>
-        ))}
-      </div>
-      {fieldsToShow.map(field => (
-        <div key={field} className={styles.entityRow}>
-          <div className={styles.cell}>{field}</div>
-          {entityData.map(entity => (
-          <div key={`${entity['id']}.${field}`} className={styles.cell}>{entity[field]}</div>
-          ))}
+  return (
+    <div className={styles.threeDayContentGrid}>
+      <StoryFieldLabelCol
+        topRowHeight={topRowHeight}
+        addNewRowHeight={addNewRowHeight}
+        fieldRows={fieldRows}
+        isCalendarExpanded={isCalendarExpanded}
+      />
+      <div className={styles.dayDataViewport}>
+        <div className={styles.dayDataTrack}>
+          <DayColumn
+            topRowHeight={topRowHeight}
+            isCalendarExpanded={isCalendarExpanded}
+            fieldRows={fieldRows}
+            dayData={entityData[0]}
+          />
+          <DayColumn
+            topRowHeight={topRowHeight}
+            isCalendarExpanded={isCalendarExpanded}
+            fieldRows={fieldRows}
+            dayData={entityData[1]}
+          />
+          <DayColumn
+            topRowHeight={topRowHeight}
+            isCalendarExpanded={isCalendarExpanded}
+            fieldRows={fieldRows}
+            dayData={entityData[2]}
+          />
         </div>
-      ))}
-      <div className={styles.entityRow}>
-        <div className={styles.cell}>
-          add new field
-        </div>
-        {entityData.map((entity, i) => (
-          <div className={styles.cell} key={i}></div>
-        ))}
       </div>
     </div>
-  </>
   )
 }
 
