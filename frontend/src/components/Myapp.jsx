@@ -45,7 +45,7 @@ function Myapp() {
       </div>
       <ThreeDayContentGrid
         activeDate={activeDate}
-        isCalendarExpanded={isCalendarExpanded}
+        isCalendarExpanded={isCalendarExpanded} // conditionally change background color of header
       />
     </div>
   )

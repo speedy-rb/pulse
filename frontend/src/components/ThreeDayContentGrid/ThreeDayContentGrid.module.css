@@ -1,3 +1,7 @@
+.entityLabelRow {
+    background-color: var(--header-background-color);
+}
+
 .entityLabelRowExpanded {
     background-color: var(--body-background-color);
     padding-top: 8px;
