@@ -1,7 +1,7 @@
 import styles from './DayColumn.module.css';
 
-function DayColumn({ topRowHeight, isCalendarExpanded, fieldRows, dayData }) {
-  const gridTemplateRows = [topRowHeight, ...fieldRows.map(row => row.height)]
+function DayColumn({ topRowHeight, addNewRowHeight, isCalendarExpanded, fieldRows, dayData }) {
+  const gridTemplateRows = [topRowHeight, ...fieldRows.map(row => row.height), addNewRowHeight]
     .join(" ");
   return (
     <div
@@ -30,6 +30,7 @@ function DayColumn({ topRowHeight, isCalendarExpanded, fieldRows, dayData }) {
         </div>
         ))
       }
+      <div className={styles.cell}>.</div>
     </div>      
   )
 }
