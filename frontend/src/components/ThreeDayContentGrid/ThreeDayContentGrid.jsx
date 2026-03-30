@@ -48,7 +48,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     startY: 0,
     startTime: null,
   })
-  const snapTargetRef = useRef(3); // index of activeDate
+  const snapTargetRef = useRef(activeDate); // index of activeDate
 
   useLayoutEffect(() => {
     if (!dayDataTrackRef.current) return;
@@ -87,7 +87,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     if (!dragState.isDragging) return;
     dragStateRef.current.isDragging = false;
     const dx = e.clientX - dragState.startX;
-    const time = performance.now() - dragState.startTime.current;
+    const time = performance.now() - dragState.startTime;
     const velocity = dx / time;
     const viewportWidth = dayDataViewportRef.current.clientWidth;
     const columnWidth = viewportWidth / 3;
@@ -132,7 +132,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
         >
           {entityData.map((dayData, i) => (
             <DayColumn
-              key={dayData.id}
+              key={i}
               topRowHeight={topRowHeight}
               addNewRowHeight={addNewRowHeight}
               isCalendarExpanded={isCalendarExpanded}
