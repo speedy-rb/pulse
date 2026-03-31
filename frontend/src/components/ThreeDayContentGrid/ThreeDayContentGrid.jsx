@@ -81,6 +81,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     }
   }
   function handlePointerDown(e) {
+    e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
     updateDragStateRefForEvent(e);
     dayDataTrackRef.current.style.transition = 'none';
