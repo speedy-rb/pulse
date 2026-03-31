@@ -9,6 +9,7 @@ function StoryFieldLabelCol({
   handlePointerDown,
   handlePointerMove,
   handlePointerUp,
+  handleScrollWheel,
  }) {
   const bodyGridTemplateRows = [
     ...fieldRows.map(row => row.height), addNewRowHeight]
@@ -30,6 +31,7 @@ function StoryFieldLabelCol({
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onWheel={handleScrollWheel}
       >
         <div
           className={styles.fieldLabelsGrid}

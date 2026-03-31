@@ -36,16 +36,12 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     // { key: "date", label: "date", height: '50px'},
     { key: "id", label: "id", height: '30px'},
     { key: "notes", label: "notes", height: '120px'},
-    { key: "filler", label: "filler", height: '400px'},
+    { key: "filler", label: "filler", height: '600px'},
   ]
 
   const yScrollableRefs = useRef([]);
   const isSyncingYRef = useRef(false);
-  function syncYScroll(el) {
-    const scrollTop = el.scrollTop;
-    updateYRefs(scrollTop);
-  }
-  function updateYRefs(newScrollTop) {
+  function updateYRefs(newScrollTop) { //  assumes you already clamped
     if (isSyncingYRef.current) return;
     isSyncingYRef.current = true;
     yScrollableRefs.current.forEach((el, i) => {
@@ -85,7 +81,6 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     }
   }
   function handlePointerDown(e) {
-    console.log('handlePointerDown');
     e.currentTarget.setPointerCapture(e.pointerId);
     updateDragStateRefForEvent(e);
     dayDataTrackRef.current.style.transition = 'none';
@@ -96,11 +91,9 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
     if (Math.abs(dx) > Math.abs(dy)) {
       dragStateRef.current.axis =  'x';
-      console.log('x scroll');
     }
     else {
       dragStateRef.current.axis =  'y';
-      console.log('y scroll');
     }
   }
   function clamp(value,  min, max) {
@@ -110,17 +103,26 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     const dx = e.clientX - dragStateRef.current.startX;
     dayDataTrackRef.current.style.transform = `translateX(calc(-100% + ${dx}px))`;
   }
+  function getTargetScrollTop(currentScrollTop, dy) {
+    const el = yScrollableRefs.current[0]
+    const maxScrollTop = el.scrollHeight - el.clientHeight;
+    const unboundedScrollTop = currentScrollTop - dy;
+    const targetScrollTop = clamp(unboundedScrollTop, 0, maxScrollTop);
+    return targetScrollTop;
+  }
   function handleYMove(e) {
     const dragState = dragStateRef.current;
     const dy = e.clientY - dragState.startY;
-    console.log('y stuff');
-    const maxScrollTop = yScrollableRefs.current[0].scrollHeight - yScrollableRefs.current[0].clientHeight;
-    const unboundedScrollTop = dragState.currentScrollTop - dy
-    const targetScrollTop = clamp(unboundedScrollTop, 0, maxScrollTop);
-    console.log(`${maxScrollTop} ${unboundedScrollTop} ${targetScrollTop}`)
+    const currentScrollTop = e.currentTarget.scrollTop;
+    const targetScrollTop =  getTargetScrollTop(currentScrollTop, dy)
     updateYRefs(targetScrollTop);
   }
-
+  function handleScrollWheel(e) {
+    const dy = -e.deltaY;
+    const currentScrollTop = yScrollableRefs.current[0].scrollTop;
+    const targetScrollTop = getTargetScrollTop(currentScrollTop, dy);
+    updateYRefs(targetScrollTop);
+  }
   function handlePointerMove(e, xEnabled, yEnabled) {
     if (!dragStateRef.current.isDragging) return;
     e.preventDefault();
@@ -167,14 +169,11 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     handlePointerUp(e, false, true);
   }
   function handlePointerUp(e, xEnabled, yEnabled) {
-    console.log('handlePointerUp');
     if (!dragStateRef.current.isDragging) return;
     const dragState = dragStateRef.current;
     if (dragState.axis === 'x' && xEnabled) {
-      console.log('x pointer up stuff');
       handleXDragPointerUp(e);
     } else if (dragState.axis === 'y' && yEnabled) {
-      console.log('y pointer up stuff');
       // do nothing
     }
     dragState.isDragging = false;
@@ -201,6 +200,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
         handlePointerDown={handlePointerDown}
         handlePointerMove={handlePointerMoveFieldCol}
         handlePointerUp={handlePointerUpFieldCol}
+        handleScrollWheel={handleScrollWheel}
       />
       <div
         ref={dayDataViewportRef}
@@ -208,6 +208,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMoveDayDates}
         onPointerUp={handlePointerUpDayDates}
+        onWheel={handleScrollWheel}
       >
         <div
           ref={dayDataTrackRef}
@@ -225,7 +226,6 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
               fieldDataViewportRef={(el) => {
                 yScrollableRefs.current[i + 1] = el;
               }}
-              onFieldDataScroll={(e) => syncYScroll(e.currentTarget)}
             />
           ))}
         </div>
