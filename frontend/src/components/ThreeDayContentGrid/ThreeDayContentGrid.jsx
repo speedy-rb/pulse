@@ -30,7 +30,7 @@ function createEntityData(initialDate){
 function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) {
   const entityData = createEntityData(activeDate);
   const topRowHeight = '50px';
-  const addNewRowHeight = '100px';
+  const addNewRowHeight = '200px';
   const fieldRows = [
     { key: "img", label: "img", height: '200px'},
     // { key: "date", label: "date", height: '50px'},
@@ -38,6 +38,23 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     { key: "notes", label: "notes", height: '120px'},
     { key: "filler", label: "filler", height: '400px'},
   ]
+
+  const yScrollableRefs = useRef([]);
+  const isSyncingYRef = useRef(false);
+  function syncYScroll(el) {
+    const scrollTop = el.scrollTop;
+    updateYRefs(scrollTop);
+  }
+  function updateYRefs(newScrollTop) {
+    if (isSyncingYRef.current) return;
+    isSyncingYRef.current = true;
+    yScrollableRefs.current.forEach((el, i) => {
+      el.scrollTop = newScrollTop;
+    });
+    requestAnimationFrame(() => {
+      isSyncingYRef.current = false;
+    });
+  }
 
   const dayDataViewportRef = useRef(null);
   const dayDataTrackRef = useRef(null);
@@ -47,45 +64,87 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     startX: 0,
     startY: 0,
     startTime: null,
+    currentScrollTop: 0,
   })
   const snapTargetRef = useRef(activeDate); // index of activeDate
 
-  useLayoutEffect(() => {
+  useLayoutEffect(() => { // prevent flicker on horizontal swipe
     if (!dayDataTrackRef.current) return;
     dayDataTrackRef.current.style.transition = 'none';
     dayDataTrackRef.current.style.transform = 'translateX(-100%)';
   }, [activeDate]);
 
+  function updateDragStateRefForEvent(e) {
+    dragStateRef.current = {
+      isDragging: true,
+      axis: null,
+      startX: e.clientX,
+      startY: e.clientY,
+      startTime: performance.now(),
+      currentScrollTop: yScrollableRefs.current[0].scrollTop,
+    }
+  }
   function handlePointerDown(e) {
+    console.log('handlePointerDown');
     e.currentTarget.setPointerCapture(e.pointerId);
-    dragStateRef.current.isDragging = true;
-    dragStateRef.current.axis = null;
-    dragStateRef.current.startX = e.clientX;
-    dragStateRef.current.startY = e.clientY;
-    dragStateRef.current.startTime = performance.now();
+    updateDragStateRefForEvent(e);
     dayDataTrackRef.current.style.transition = 'none';
     return
   }
-  function handlePointerMove(e) {
-    const dragState = dragStateRef.current;
-    if (!dragState.isDragging) return;
-    const dx = e.clientX - dragState.startX;
-    const dy = e.clientY - dragState.startY;
-    if (!dragState.axis) {
-      const threshold = 8;
-      if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
-      dragState.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+  function determineSwipeAxis(dx, dy) {
+    const threshold = 8;
+    if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      dragStateRef.current.axis =  'x';
+      console.log('x scroll');
     }
-    if (dragState.axis === 'x') {
-      e.preventDefault();
-      dayDataTrackRef.current.style.transform = `translateX(calc(-100% + ${dx}px))`;
+    else {
+      dragStateRef.current.axis =  'y';
+      console.log('y scroll');
     }
   }
-  function handlePointerUp(e) {
-    const VELOCITY_THRESHOLD = 0.35
+  function clamp(value,  min, max) {
+    return Math.max(min, Math.min(value, max));
+  }
+  function handleXMove(e) {
+    const dx = e.clientX - dragStateRef.current.startX;
+    dayDataTrackRef.current.style.transform = `translateX(calc(-100% + ${dx}px))`;
+  }
+  function handleYMove(e) {
     const dragState = dragStateRef.current;
-    if (!dragState.isDragging) return;
-    dragStateRef.current.isDragging = false;
+    const dy = e.clientY - dragState.startY;
+    console.log('y stuff');
+    const maxScrollTop = yScrollableRefs.current[0].scrollHeight - yScrollableRefs.current[0].clientHeight;
+    const unboundedScrollTop = dragState.currentScrollTop - dy
+    const targetScrollTop = clamp(unboundedScrollTop, 0, maxScrollTop);
+    console.log(`${maxScrollTop} ${unboundedScrollTop} ${targetScrollTop}`)
+    updateYRefs(targetScrollTop);
+  }
+
+  function handlePointerMove(e, xEnabled, yEnabled) {
+    if (!dragStateRef.current.isDragging) return;
+    e.preventDefault();
+    const dragState = dragStateRef.current;
+    const dx = e.clientX - dragState.startX;
+    const dy = e.clientY - dragState.startY;
+    if (!dragState.axis) { // set the axis of scrolling
+      determineSwipeAxis(dx, dy);
+    }
+    if (dragState.axis === 'x' && xEnabled) {
+      handleXMove(e);
+    } else if (dragState.axis === 'y' && yEnabled) {
+      handleYMove(e);
+    }
+  }
+  function handlePointerMoveDayDates(e) {
+    handlePointerMove(e, true, true);
+  }
+  function handlePointerMoveFieldCol(e) {
+    handlePointerMove(e, false, true);
+  }
+  function handleXDragPointerUp(e) {
+    const dragState = dragStateRef.current;
+    const VELOCITY_THRESHOLD = 0.35
     const dx = e.clientX - dragState.startX;
     const time = performance.now() - dragState.startTime;
     const velocity = dx / time;
@@ -100,7 +159,26 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     dayDataTrackRef.current.style.transition = 'transform 200ms ease';
     dayDataTrackRef.current.style.transform = `translateX(calc(-100% + ${shift * columnWidth}px))`;
     snapTargetRef.current = activeDate.add(-shift, 'days');
-    dragStateRef.current.axis = null;
+  }
+  function handlePointerUpDayDates(e) {
+    handlePointerUp(e, true, true);
+  }
+  function handlePointerUpFieldCol(e) {
+    handlePointerUp(e, false, true);
+  }
+  function handlePointerUp(e, xEnabled, yEnabled) {
+    console.log('handlePointerUp');
+    if (!dragStateRef.current.isDragging) return;
+    const dragState = dragStateRef.current;
+    if (dragState.axis === 'x' && xEnabled) {
+      console.log('x pointer up stuff');
+      handleXDragPointerUp(e);
+    } else if (dragState.axis === 'y' && yEnabled) {
+      console.log('y pointer up stuff');
+      // do nothing
+    }
+    dragState.isDragging = false;
+    dragState.axis = null;
   }
   function handleTransitionEnd(e) {
     if (e.propertyName !== 'transform') return;
@@ -117,13 +195,19 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
         addNewRowHeight={addNewRowHeight}
         fieldRows={fieldRows}
         isCalendarExpanded={isCalendarExpanded}
+        fieldLabelsViewportRef={(el) => {
+          yScrollableRefs.current[0] = el;
+        }}
+        handlePointerDown={handlePointerDown}
+        handlePointerMove={handlePointerMoveFieldCol}
+        handlePointerUp={handlePointerUpFieldCol}
       />
       <div
         ref={dayDataViewportRef}
         className={styles.dayDataViewport}
         onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
+        onPointerMove={handlePointerMoveDayDates}
+        onPointerUp={handlePointerUpDayDates}
       >
         <div
           ref={dayDataTrackRef}
@@ -138,6 +222,10 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
               isCalendarExpanded={isCalendarExpanded}
               fieldRows={fieldRows}
               dayData={dayData}
+              fieldDataViewportRef={(el) => {
+                yScrollableRefs.current[i + 1] = el;
+              }}
+              onFieldDataScroll={(e) => syncYScroll(e.currentTarget)}
             />
           ))}
         </div>

@@ -1,3 +1,7 @@
+.dayColumn {
+    min-height: 0;
+}
+
 .dayHeaderContainer {
     display: flex;
     flex-direction: column;
@@ -18,6 +22,18 @@
 
 .dayHeaderDay {
     font-size: var(--font-size-day-number-entity-label-header);
+}
+
+.fieldDataViewport {
+    min-height: 0;
+    overflow-y: hidden;
+    /* overflow-y: auto; */
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.fieldDataGrid {
+    min-width: 0;
 }
 
 .cell {

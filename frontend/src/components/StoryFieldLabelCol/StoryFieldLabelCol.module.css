@@ -1,5 +1,6 @@
 .storyFieldLabelCol {
     background-color: var(--body-background-color);
+    min-height: 0;
 }
 
 .deadZone {
@@ -8,6 +9,16 @@
 
 .deadZoneCalendarExpanded {
     background-color: var(--body-background-color);
+}
+
+.fieldLabelsViewport {
+    min-height: 0;
+    overflow: hidden;
+    touch-action: none;
+}
+
+.fieldLabelsGrid {
+    min-width: 0;
 }
 
 .cell {

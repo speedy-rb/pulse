@@ -1,17 +1,22 @@
 .threeDayContentGrid {
     display: grid;
     grid-template-columns: var(--label-column-width) minmax(0, 1fr);
+    min-height: 0;
 }
 
 .dayDataViewport {
     background-color: var(--body-background-color);
     overflow: hidden;
-    touch-action: pan-y;
+    touch-action: none;
+    min-height: 0;
 }
 
 .dayDataTrack {
     display: flex;
     transform: translateX(-100%);
+    /* overflow-y: hidden; */
+    /* min-height: 0; */
+    height: 100%;
 }
 
 .dayDataTrack > * {
