@@ -114,7 +114,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
   function handleYMove(e) {
     const dragState = dragStateRef.current;
     const dy = e.clientY - dragState.startY;
-    const currentScrollTop = e.currentTarget.scrollTop;
+    const currentScrollTop = yScrollableRefs.current[0].scrollTop;
     const targetScrollTop =  getTargetScrollTop(currentScrollTop, dy)
     updateYRefs(targetScrollTop);
   }
