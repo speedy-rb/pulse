@@ -60,7 +60,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
     startX: 0,
     startY: 0,
     startTime: null,
-    currentScrollTop: 0,
+    startScrollTop: 0,
   })
   const snapTargetRef = useRef(activeDate); // index of activeDate
 
@@ -77,7 +77,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
       startX: e.clientX,
       startY: e.clientY,
       startTime: performance.now(),
-      currentScrollTop: yScrollableRefs.current[0].scrollTop,
+      startScrollTop: yScrollableRefs.current[0].scrollTop,
     }
   }
   function handlePointerDown(e) {
@@ -114,8 +114,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
   function handleYMove(e) {
     const dragState = dragStateRef.current;
     const dy = e.clientY - dragState.startY;
-    const currentScrollTop = yScrollableRefs.current[0].scrollTop;
-    const targetScrollTop =  getTargetScrollTop(currentScrollTop, dy)
+    const targetScrollTop =  getTargetScrollTop(dragState.startScrollTop, dy)
     updateYRefs(targetScrollTop);
   }
   function handleScrollWheel(e) {
