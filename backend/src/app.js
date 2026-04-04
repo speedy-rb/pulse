@@ -1,6 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db/queries');
+const dotenv = require('dotenv');
+const path = require('path');
+
+dotenv.config({
+    path: process.env.ENV_FILE || path.join(__dirname, "../.env"),
+})
 
 const app = express();
 
@@ -8,7 +14,6 @@ if (process.env.NODE_ENV === 'dev') {
     app.use(cors({
         origin: 'http://localhost:5173'
     }));
-
 }
 
 app.use('/uploads', express.static(process.env.UPLOADS_DIR));
