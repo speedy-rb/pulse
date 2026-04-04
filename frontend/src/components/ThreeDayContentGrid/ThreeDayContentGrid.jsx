@@ -1,42 +1,52 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import styles from './ThreeDayContentGrid.module.css';
 import DayColumn from '../DayColumn/DayColumn';
 import StoryFieldLabelCol from '../StoryFieldLabelCol/StoryFieldLabelCol';
 
-function getDataForDay(dateObj) {
-  const dayIndex = Math.floor(dateObj.valueOf() / 86400000);
-  const mod = dayIndex % 3;
-  const id = dateObj.startOf('day').valueOf();
+async function getDataForDay(curDate) {
+  const dayIndex = Math.floor(curDate.valueOf() / 86400000);
+  const dateStr = curDate.format('YYYY-MM-DD');
+  const postList = await fetch(`/posts?date=${dateStr}`)
+    .then(res => res.json());
+  if (postList.length === 1) {
+    return postList[0];
+  }
   return {
     'id': dayIndex,
-    'img': `ref_story_${mod}.jpg`,
+    'image_path': `/ref_story_2.jpg`,
+    'post_date': dateStr,
+    'location': '...',
     'notes': `post ${dayIndex} details`,
-    'date': dateObj.format("MM-DD-YYYY"),
-    'filler': '...',
-    'dateObj': dateObj
   }
 }
 
-function createEntityData(initialDate){
+async function createEntityData(initialDate){
   const entityData = [];
   for (let i = 0; i < 9; i++) {
     const curDate = initialDate.add(i-3, 'day');
-    const curObj = getDataForDay(curDate);
+    const curObj = await getDataForDay(curDate);
     entityData.push(curObj);
   }
-  return entityData
+  return entityData;
 }
 
 function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) {
-  const entityData = createEntityData(activeDate);
+  const [entityData, setEntityData] = useState([]);
+  useEffect(() => {
+    async function loadEntityData() {
+      const data = await createEntityData(activeDate);
+      setEntityData(data)
+    }
+    loadEntityData();
+  }, [activeDate]);
   const topRowHeight = '50px';
   const addNewRowHeight = '200px';
   const fieldRows = [
-    { key: "img", label: "img", height: '200px'},
+    { key: "image_path", label: "img", height: '200px'},
     // { key: "date", label: "date", height: '50px'},
     { key: "id", label: "id", height: '30px'},
     { key: "notes", label: "notes", height: '120px'},
-    { key: "filler", label: "filler", height: '600px'},
+    { key: "location", label: "filler", height: '600px'},
   ]
 
   const yScrollableRefs = useRef([]);

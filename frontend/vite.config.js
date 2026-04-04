@@ -33,11 +33,9 @@ registerType: 'autoUpdate',
   ],
   server: {
     proxy: {
-      "/api": {
-       target: "http://localhost:3001", // where your Express app runs
-        changeOrigin: true               // sets Host header to target
-        // optional: rewrite: (path) => path.replace(/^\/api/, "")
-      }
+      "/api": "http://localhost:3000",
+      "/posts": "http://localhost:3000",
+      "/uploads": "http://localhost:3000"
     }
   }
 })

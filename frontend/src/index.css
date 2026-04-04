@@ -7,6 +7,7 @@
 
 :root {
   --body-background-color: #262628;
+  --header-background-color: #363638;
   --label-column-width: 70px;
   --num-entity-columns: 3;
   --pfp-size: 20px;
@@ -18,7 +19,6 @@
   --arrow-size: 10px;
   --text-color-primary: rgb(249, 249, 249);
   --text-color-secondary: rgb(214, 214, 214);
-  --header-background-color: #363638;
   --grid-line-color: #333638;
   --font-size-calendar-module-day-numbers: 12px;
   --active-day-circle-diameter-calendar: 24px;

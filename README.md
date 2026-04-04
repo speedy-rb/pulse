@@ -5,4 +5,5 @@ frontend
   npm run dev
 
 backend
-  not configured yet
+  cd backend
+  node --env-file .env --watch ./src/app.js

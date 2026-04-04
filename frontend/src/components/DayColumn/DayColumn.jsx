@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import styles from './DayColumn.module.css';
 
 function DayColumn({
@@ -8,6 +9,7 @@ function DayColumn({
     dayData,
     fieldDataViewportRef,
   }) {
+  const dateObj = dayjs(dayData.post_date);
   const bodyGridTemplateRows = [
     ...fieldRows.map(row => row.height), addNewRowHeight]
     .join(" ");
@@ -22,8 +24,8 @@ function DayColumn({
       <div className={`${styles.dayHeaderContainer} ${
         isCalendarExpanded ? styles.dayHeaderContainerCalendarExpanded : ""
       }`}>
-        <div className={styles.dayHeaderWeekDay}>{dayData.dateObj.format('ddd').toUpperCase()}</div>
-        <div className={styles.dayHeaderDay}>{dayData.dateObj.date()}</div>
+        <div className={styles.dayHeaderWeekDay}>{dateObj.format('ddd').toUpperCase()}</div>
+        <div className={styles.dayHeaderDay}>{dateObj.date()}</div>
       </div>
       <div
         ref={fieldDataViewportRef}
@@ -38,9 +40,9 @@ function DayColumn({
         >
           { fieldRows.map((row, i) => (
             <div key={i} className={styles.cell}>
-              {row.key === 'img'
+              {row.key === 'image_path'
                 ? <img
-                    src={dayData[row.key]}
+                    src={`/uploads${dayData[row.key]}`}
                     height='100%'
                   />
                 : <div>
