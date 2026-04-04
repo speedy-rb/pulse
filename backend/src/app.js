@@ -1,10 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db/queries');
-const dotenv = require('dotenv');
-const path = require('path');
 
-dotenv.config({
+const path = require('path');
+require('dotenv').config({
     path: process.env.ENV_FILE || path.join(__dirname, "../.env"),
 })
 
@@ -18,13 +17,8 @@ if (process.env.NODE_ENV === 'dev') {
 
 app.use('/uploads', express.static(process.env.UPLOADS_DIR));
 
-app.get('/', (req, res) => 
-    res.send("hello world")
-);
-
 async function getPostForDate(req, res) {
-    // const date = '2026-04-04';
-    const { date } = req.query;
+    const { date } = req.query; // '2026-04-04'
     if (!date) {
         return res.status(400).json({
             error: 'Missing required query paramter: date'
@@ -34,7 +28,8 @@ async function getPostForDate(req, res) {
     res.json(obj);
 }
 
-app.get('/posts', (req, res) => {
+app.get('/api/posts', (req, res) => {
+    console.log('hit');
     getPostForDate(req, res);
 });
 

@@ -6,7 +6,7 @@ import StoryFieldLabelCol from '../StoryFieldLabelCol/StoryFieldLabelCol';
 async function getDataForDay(curDate) {
   const dayIndex = Math.floor(curDate.valueOf() / 86400000);
   const dateStr = curDate.format('YYYY-MM-DD');
-  const postList = await fetch(`/posts?date=${dateStr}`)
+  const postList = await fetch(`/api/posts?date=${dateStr}`)
     .then(res => res.json());
   if (postList.length === 1) {
     return postList[0];
