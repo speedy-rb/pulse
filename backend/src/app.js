@@ -28,7 +28,7 @@ async function getPostForDate(req, res) {
     res.json(obj);
 }
 
-app.get('/api/posts', (req, res) => {
+app.get('/posts', (req, res) => {
     console.log('hit');
     getPostForDate(req, res);
 });
