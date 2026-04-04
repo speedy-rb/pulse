@@ -24,5 +24,4 @@ jobs:
             cd frontend && npm ci && npm run build
             rsync -a dist/ /var/www/pulse/
             cd ../backend && npm ci
-            export ENV_FILE=/srv/pulse/.env
-            pm2 restart app --update-env || pm2 start src/app.js --name app
+            pm2 restart app || pm2 start ecosystem.config.js
