@@ -18,12 +18,12 @@ registerType: 'autoUpdate',
         theme_color: "#bbf1ffff",
         icons: [
           {
-            src: "/pulse-icon-192-192.png",
+            src: "/pulse-icon-192x192.png",
             sizes: "192x192",
             type: "image/png"
           },
           {
-            src: "/pulse-icon-512-512.png",
+            src: "/pulse-icon-512x512.png",
             sizes: "512x512",
             type: "image/png"
           }
