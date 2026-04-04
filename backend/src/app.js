@@ -1,12 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const db = require('./db/queries');
-
 const path = require('path');
 require('dotenv').config({
     path: process.env.ENV_FILE || path.join(__dirname, "../.env"),
 })
 
+const db = require('./db/queries');
 const app = express();
 
 if (process.env.NODE_ENV === 'dev') {
