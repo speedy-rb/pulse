@@ -1,0 +1,137 @@
+:root {
+  --horizontal-padding-post-form: 12px;
+  --top-padding-post-form: 6px;
+  --vertical-padding-title-row: 8px;
+  --vertical-padding-field-row: 6px;
+  --icon-size: 25px;
+  --icon-y-offset: -2px;
+  --chevron-container-width: 40px;
+  --chevron-color: white;
+}
+
+input, textarea, button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+input {
+  width: 100%;
+  border: 1px solid purple;
+}
+
+.postFormContainer {
+  padding-top: var(--top-padding-post-form);
+}
+
+.stickyHeaderPostForm {
+  display: flex;
+  justify-content: space-between;
+  padding-left: var(--horizontal-padding-post-form);
+  padding-right: var(--horizontal-padding-post-form);
+}
+
+.stickyHeaderChevronContainer {
+  width: var(--chevron-container-width);
+}
+
+.stickyHeaderChevronContainer svg polyline {
+  fill: none;
+  stroke: var(--chevron-color);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.postForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleRow, .fieldHeaderRow {
+  display: flex;
+  gap: 10px;
+}
+
+.titleRow {
+  align-items: center;
+  padding: var(--vertical-padding-title-row) var(--horizontal-padding-post-form);
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--accent-color);
+  padding-top: var(--vertical-padding-field-row);
+  padding-bottom: var(--vertical-padding-field-row);
+  border: 1px solid pink;
+}
+
+.formRow:first-of-type {
+  border-top: 1px solid var(--accent-color)
+}
+
+.fieldHeaderRow {
+  align-items: flex-start;
+  padding-left: var(--horizontal-padding-post-form);
+  padding-right: var(--horizontal-padding-post-form);
+}
+
+.fieldWidgetRow {
+  display: flex;
+  justify-content: center;
+  border: 2px solid blue;
+}
+
+.formIconContainer {
+  height: var(--icon-size);
+  width: var(--icon-size);
+  border: 1px solid orange;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(var(--icon-y-offset));
+}
+
+.formIconContainer svg path {
+  fill: white;
+}
+
+.addImageBox {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  height: 150px;
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addImageBox svg {
+  width: 15px;
+}
+
+.addImageBox svg path {
+  fill: white;
+}
+
+.calendarField {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendarContainer {
+  border: 1px solid cyan;
+  width: 100%;
+}
+
+.formTextArea {
+  border: 1px solid yellow;
+  width: 100%;
+}
+
+.submitFormBtn {
+  background-color: lime;
+  color: black;
+}

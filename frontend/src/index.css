@@ -6,6 +6,9 @@
 }
 
 :root {
+  --primary-color: #262628;
+  --secondary-color: #363638;
+  --accent-color: #798288;
   --body-background-color: #262628;
   --header-background-color: #363638;
   --label-column-width: 70px;
