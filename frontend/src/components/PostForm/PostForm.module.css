@@ -1,8 +1,8 @@
 :root {
   --horizontal-padding-post-form: 12px;
   --top-padding-post-form: 6px;
-  --vertical-padding-title-row: 8px;
-  --vertical-padding-field-row: 6px;
+  --vertical-padding-title-row: 10px;
+  --vertical-padding-field-row: 12px;
   --icon-size: 25px;
   --icon-y-offset: -2px;
   --chevron-container-width: 40px;
@@ -19,7 +19,6 @@ input, textarea, button {
 
 input {
   width: 100%;
-  border: 1px solid purple;
 }
 
 .postFormContainer {
@@ -66,7 +65,7 @@ input {
   border-bottom: 1px solid var(--accent-color);
   padding-top: var(--vertical-padding-field-row);
   padding-bottom: var(--vertical-padding-field-row);
-  border: 1px solid pink;
+  /* border: 1px solid pink; */
 }
 
 .formRow:first-of-type {
@@ -82,13 +81,11 @@ input {
 .fieldWidgetRow {
   display: flex;
   justify-content: center;
-  border: 2px solid blue;
 }
 
 .formIconContainer {
   height: var(--icon-size);
   width: var(--icon-size);
-  border: 1px solid orange;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,11 +98,18 @@ input {
 
 .addImageBox {
   border: 1px solid rgba(255, 255, 255, 0.14);
-  height: 150px;
+  height: 210px;
   width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+.addImageBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .addImageBox svg {
@@ -116,22 +120,20 @@ input {
   fill: white;
 }
 
+.dayOfWeek {
+  font-style: italic;
+  color: #d0d0d0
+}
+
 .calendarField {
   display: flex;
   flex-direction: column;
 }
 
 .calendarContainer {
-  border: 1px solid cyan;
   width: 100%;
 }
 
 .formTextArea {
-  border: 1px solid yellow;
   width: 100%;
-}
-
-.submitFormBtn {
-  background-color: lime;
-  color: black;
 }
