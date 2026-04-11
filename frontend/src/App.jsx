@@ -4,8 +4,7 @@ import PostForm from './components/PostForm/PostForm';
 
 function App() {
   return <>
-    <PostForm />
-    {/* <Myapp /> */}
+    <Myapp />
   </>
 }
 
