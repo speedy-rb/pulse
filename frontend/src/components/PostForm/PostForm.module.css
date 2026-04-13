@@ -22,7 +22,11 @@ input {
 }
 
 .postFormContainer {
+  height: 100%;
   padding-top: var(--top-padding-post-form);
+  background-color: var(--header-background-color);
+  display: flex;
+  flex-direction: column;
 }
 
 .stickyHeaderPostForm {
@@ -34,6 +38,7 @@ input {
 
 .stickyHeaderChevronContainer {
   width: var(--chevron-container-width);
+  touch-action: none;
 }
 
 .stickyHeaderChevronContainer svg polyline {
@@ -47,6 +52,7 @@ input {
 .postForm {
   display: flex;
   flex-direction: column;
+  flex: 0 0 auto;
 }
 
 .titleRow, .fieldHeaderRow {
@@ -136,4 +142,8 @@ input {
 
 .formTextArea {
   width: 100%;
+}
+
+.formFiller {
+  flex: 1 1 auto;
 }

@@ -8,11 +8,35 @@ function DayColumn({
     fieldRows,
     dayData,
     fieldDataViewportRef,
+    setIsEditPostExpanded,
   }) {
   const dateObj = dayjs(dayData.post_date);
   const bodyGridTemplateRows = [
     ...fieldRows.map(row => row.height), addNewRowHeight]
     .join(" ");
+  const isNoData = dayData.id ? false : true;
+  const openEditPost = () => setIsEditPostExpanded(true);
+  function renderCellContent(row) {
+    if (row.key === 'image_path') {
+      if (isNoData) {
+        return (
+          <button
+            className={styles.createPostBtn}
+            onClick={openEditPost}
+          >
+            Create Post
+          </button>
+        )
+      }
+      return (
+        <img
+          src={`/uploads${dayData[row.key]}`}
+          height='100%'
+        />
+      )
+    }
+    return <div>{dayData[row.key]}</div>
+  }
   return (
     <div
       className={styles.dayColumn}
@@ -40,15 +64,7 @@ function DayColumn({
         >
           { fieldRows.map((row, i) => (
             <div key={i} className={styles.cell}>
-              {row.key === 'image_path'
-                ? <img
-                    src={`/uploads${dayData[row.key]}`}
-                    height='100%'
-                  />
-                : <div>
-                    {dayData[row.key]}
-                  </div>
-              }
+              {renderCellContent(row)}
             </div>
             ))
           }

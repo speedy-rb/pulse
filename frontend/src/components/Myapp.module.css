@@ -73,3 +73,11 @@
     border-radius: 50%;
     margin-right: var(--pfp-right-margin);
 }
+
+.postFormOverlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+}

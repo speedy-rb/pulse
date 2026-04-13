@@ -1,18 +1,45 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styles from './Myapp.module.css';
 import dayjs from 'dayjs';
 import Calendar from './Calendar/Calendar';
 import ThreeDayContentGrid from './ThreeDayContentGrid/ThreeDayContentGrid';
+import PostForm from './PostForm/PostForm';
 
 const today = dayjs();
 function Myapp() {
   const [isCalendarExpanded, setIsCalendarExpanded] = useState(false);
   const [activeDate, setActiveDate] = useState(today);
-
+  const [isEditPostExpanded, setIsEditPostExpanded] = useState(false);
+  const [overlayHeight, setOverlayHeight] = useState(window.innerHeight);
   const toggleCalendar = () => {
     setIsCalendarExpanded(prev => !prev);
   }
+  const dragStateRef = useRef({
+      isDragging: false,
+      startY: 0,
+      startHeight: 0,
+    })
+  function handleOverlayPointerDown(e) {
+    dragStateRef.current.isDragging = true;
+    dragStateRef.current.startY = e.clientY;
+    dragStateRef.current.startHeight = overlayHeight;
 
+    window.addEventListener('pointermove', handleOverlayPointerMove);
+    window.addEventListener('pointerup', handleOverlayPointerUp);
+  }
+  function handleOverlayPointerMove(e) {
+    if (!dragStateRef.current.isDragging) return;
+    const { startY, startHeight } = dragStateRef.current;
+    const dy = startY - e.clientY;
+    const unclampedHeight = startHeight + dy;
+    const clampedHeight = Math.min(unclampedHeight, window.innerHeight);
+    setOverlayHeight(clampedHeight);
+  }
+  function handleOverlayPointerUp() {
+    dragStateRef.current.isDragging = false;
+    window.removeEventListener('pointermove', handleOverlayPointerMove);
+    window.removeEventListener('pointerup', handleOverlayPointerUp);
+  }
   return (
     <div className={styles.appShell}>
       <div className={styles.header}>
@@ -48,7 +75,20 @@ function Myapp() {
         activeDate={activeDate}
         setActiveDate={setActiveDate}
         isCalendarExpanded={isCalendarExpanded} // conditionally change background color of header
+        setIsEditPostExpanded={setIsEditPostExpanded}
       />
+
+      {isEditPostExpanded && (
+        <div
+          className={styles.postFormOverlay}
+          style={{ height: `${overlayHeight}px`}}
+        >
+          <PostForm
+            handleOverlayPointerDown={handleOverlayPointerDown}
+            setIsEditPostExpanded={setIsEditPostExpanded}
+          />
+        </div>
+      )}
     </div>
   )
 }

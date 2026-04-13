@@ -12,11 +12,11 @@ async function getDataForDay(curDate) {
     return postList[0];
   }
   return {
-    'id': dayIndex,
-    'image_path': `/ref_story_2.jpg`,
+    'id': null,
+    'image_path': '',
     'post_date': dateStr,
-    'location': '...',
-    'notes': `post ${dayIndex} details`,
+    'location': '',
+    'notes': '',
   }
 }
 
@@ -30,7 +30,12 @@ async function createEntityData(initialDate){
   return entityData;
 }
 
-function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) {
+function ThreeDayContentGrid({
+    activeDate,
+    setActiveDate,
+    isCalendarExpanded,
+    setIsEditPostExpanded,
+  }) {
   const [entityData, setEntityData] = useState([]);
   useEffect(() => {
     async function loadEntityData() {
@@ -236,6 +241,7 @@ function ThreeDayContentGrid({ activeDate, setActiveDate, isCalendarExpanded }) 
               fieldDataViewportRef={(el) => {
                 yScrollableRefs.current[i + 1] = el;
               }}
+              setIsEditPostExpanded={setIsEditPostExpanded}
             />
           ))}
         </div>

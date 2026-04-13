@@ -3,7 +3,10 @@ import dayjs from 'dayjs';
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import styles from './PostForm.module.css';
 
-function PostForm() {
+function PostForm({
+    handleOverlayPointerDown,
+    setIsEditPostExpanded,
+  }) {
   // schema of post
     // id
     // image_path
@@ -24,7 +27,7 @@ function PostForm() {
   const today = dayjs();
   const [activeDate, setActiveDate] = useState(today);
   const [postData, setPostData] = useState(defaultPostData);
-
+  const hideOverlay = () => setIsEditPostExpanded(false);
   function handleImageChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -66,8 +69,15 @@ function PostForm() {
     <div className={styles.postFormContainer}>
       {/* Sticky Header */}
       <div className={styles.stickyHeaderPostForm}>
-        <button>Cancel</button>
-        <div className={styles.stickyHeaderChevronContainer}>
+        <button
+          onClick={hideOverlay}
+        >
+          Cancel
+        </button>
+        <div
+          className={styles.stickyHeaderChevronContainer}
+          onPointerDown={handleOverlayPointerDown}
+        >
           <svg viewBox="0 0 80 20">
             <polyline
               points="10,3 40,10 70,3"
@@ -179,6 +189,7 @@ function PostForm() {
           </div>
         </div>
       </form>
+      <div className={styles.formFiller}></div>
     </div>
   )
 }
