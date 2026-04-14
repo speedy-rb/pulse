@@ -4,7 +4,6 @@ import DayColumn from '../DayColumn/DayColumn';
 import StoryFieldLabelCol from '../StoryFieldLabelCol/StoryFieldLabelCol';
 
 async function getDataForDay(curDate) {
-  const dayIndex = Math.floor(curDate.valueOf() / 86400000);
   const dateStr = curDate.format('YYYY-MM-DD');
   const postList = await fetch(`/api/posts?date=${dateStr}`)
     .then(res => res.json());
@@ -30,6 +29,15 @@ async function createEntityData(initialDate){
   return entityData;
 }
 
+const topRowHeight = '50px';
+const addNewRowHeight = '200px';
+const fieldRows = [
+  { key: "image_path", label: "img", height: '200px'},
+  { key: "id", label: "id", height: '30px'},
+  { key: "notes", label: "notes", height: '120px'},
+  { key: "location", label: "filler", height: '600px'},
+]
+
 function ThreeDayContentGrid({
     activeDate,
     setActiveDate,
@@ -38,37 +46,11 @@ function ThreeDayContentGrid({
     setEditPostDate,
     reloadToken,
   }) {
+  // state
   const [entityData, setEntityData] = useState([]);
   const [pendingDate, setPendingDate] = useState(null);
-  useEffect(() => {
-    async function loadEntityData() {
-      const data = await createEntityData(activeDate);
-      setEntityData(data)
-    }
-    loadEntityData();
-  }, [activeDate, reloadToken]);
-  const topRowHeight = '50px';
-  const addNewRowHeight = '200px';
-  const fieldRows = [
-    { key: "image_path", label: "img", height: '200px'},
-    { key: "id", label: "id", height: '30px'},
-    { key: "notes", label: "notes", height: '120px'},
-    { key: "location", label: "filler", height: '600px'},
-  ]
 
-  const yScrollableRefs = useRef([]);
-  const isSyncingYRef = useRef(false);
-  function updateYRefs(newScrollTop) { //  assumes you already clamped
-    if (isSyncingYRef.current) return;
-    isSyncingYRef.current = true;
-    yScrollableRefs.current.forEach((el, i) => {
-      el.scrollTop = newScrollTop;
-    });
-    requestAnimationFrame(() => {
-      isSyncingYRef.current = false;
-    });
-  }
-
+  // refs
   const dayDataViewportRef = useRef(null);
   const dayDataTrackRef = useRef(null);
   const dragStateRef = useRef({
@@ -81,29 +63,11 @@ function ThreeDayContentGrid({
   })
   const snapTargetRef = useRef(activeDate); // index of activeDate
 
-  useLayoutEffect(() => { // prevent flicker on horizontal swipe
-    if (!dayDataTrackRef.current) return;
-    dayDataTrackRef.current.style.transition = 'none';
-    dayDataTrackRef.current.style.transform = 'translateX(-100%)';
-  }, [activeDate]);
+  // scroll system refs
+  const yScrollableRefs = useRef([]);
+  const isSyncingYRef = useRef(false);
 
-  function updateDragStateRefForEvent(e) {
-    dragStateRef.current = {
-      isDragging: true,
-      axis: null,
-      startX: e.clientX,
-      startY: e.clientY,
-      startTime: performance.now(),
-      startScrollTop: yScrollableRefs.current[0].scrollTop,
-    }
-  }
-  function handlePointerDown(e) {
-    e.preventDefault();
-    e.currentTarget.setPointerCapture(e.pointerId);
-    updateDragStateRefForEvent(e);
-    dayDataTrackRef.current.style.transition = 'none';
-    return
-  }
+  //helpers
   function determineSwipeAxis(dx, dy) {
     const threshold = 8;
     if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
@@ -117,10 +81,6 @@ function ThreeDayContentGrid({
   function clamp(value,  min, max) {
     return Math.max(min, Math.min(value, max));
   }
-  function handleXMove(e) {
-    const dx = e.clientX - dragStateRef.current.startX;
-    dayDataTrackRef.current.style.transform = `translateX(calc(-100% + ${dx}px))`;
-  }
   function getTargetScrollTop(currentScrollTop, dy) {
     const el = yScrollableRefs.current[0]
     const maxScrollTop = el.scrollHeight - el.clientHeight;
@@ -128,11 +88,45 @@ function ThreeDayContentGrid({
     const targetScrollTop = clamp(unboundedScrollTop, 0, maxScrollTop);
     return targetScrollTop;
   }
-  function handleYMove(e) {
+  function updateDragStateRefForEvent(e) {
+    dragStateRef.current = {
+      isDragging: true,
+      axis: null,
+      startX: e.clientX,
+      startY: e.clientY,
+      startTime: performance.now(),
+      startScrollTop: yScrollableRefs.current[0].scrollTop,
+    }
+  }
+  function updateYRefs(newScrollTop) { //  assumes you already clamped
+    if (isSyncingYRef.current) return;
+    isSyncingYRef.current = true;
+    yScrollableRefs.current.forEach((el, i) => {
+      el.scrollTop = newScrollTop;
+    });
+    requestAnimationFrame(() => {
+      isSyncingYRef.current = false;
+    });
+  }
+
+  // pointer helper
+  function handlePointerDown(e) {
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    updateDragStateRefForEvent(e);
+    dayDataTrackRef.current.style.transition = 'none';
+    return
+  }
+  function handlePointerUp(e, xEnabled, yEnabled) {
+    if (!dragStateRef.current.isDragging) return;
     const dragState = dragStateRef.current;
-    const dy = e.clientY - dragState.startY;
-    const targetScrollTop =  getTargetScrollTop(dragState.startScrollTop, dy)
-    updateYRefs(targetScrollTop);
+    if (dragState.axis === 'x' && xEnabled) {
+      handleXDragPointerUp(e);
+    } else if (dragState.axis === 'y' && yEnabled) {
+      // do nothing
+    }
+    dragState.isDragging = false;
+    dragState.axis = null;
   }
   function handleScrollWheel(e) {
     const dy = -e.deltaY;
@@ -161,6 +155,24 @@ function ThreeDayContentGrid({
   function handlePointerMoveFieldCol(e) {
     handlePointerMove(e, false, true);
   }
+  function handlePointerUpDayDates(e) {
+    handlePointerUp(e, true, true);
+  }
+  function handlePointerUpFieldCol(e) {
+    handlePointerUp(e, false, true);
+  }
+
+  // x/y movement
+  function handleXMove(e) {
+    const dx = e.clientX - dragStateRef.current.startX;
+    dayDataTrackRef.current.style.transform = `translateX(calc(-100% + ${dx}px))`;
+  }
+  function handleYMove(e) {
+    const dragState = dragStateRef.current;
+    const dy = e.clientY - dragState.startY;
+    const targetScrollTop =  getTargetScrollTop(dragState.startScrollTop, dy)
+    updateYRefs(targetScrollTop);
+  }
   function handleXDragPointerUp(e) {
     const dragState = dragStateRef.current;
     const VELOCITY_THRESHOLD = 0.35
@@ -179,23 +191,8 @@ function ThreeDayContentGrid({
     dayDataTrackRef.current.style.transform = `translateX(calc(-100% + ${shift * columnWidth}px))`;
     snapTargetRef.current = activeDate.add(-shift, 'days');
   }
-  function handlePointerUpDayDates(e) {
-    handlePointerUp(e, true, true);
-  }
-  function handlePointerUpFieldCol(e) {
-    handlePointerUp(e, false, true);
-  }
-  function handlePointerUp(e, xEnabled, yEnabled) {
-    if (!dragStateRef.current.isDragging) return;
-    const dragState = dragStateRef.current;
-    if (dragState.axis === 'x' && xEnabled) {
-      handleXDragPointerUp(e);
-    } else if (dragState.axis === 'y' && yEnabled) {
-      // do nothing
-    }
-    dragState.isDragging = false;
-    dragState.axis = null;
-  }
+
+  // transition handlers
   function handleTransitionEnd(e) {
     if (e.propertyName !== 'transform') return;
     const snapTarget = snapTargetRef.current;
@@ -203,6 +200,15 @@ function ThreeDayContentGrid({
       setPendingDate(snapTarget);
     }
   }
+
+  // effects
+  useEffect(() => {
+    async function loadEntityData() {
+      const data = await createEntityData(activeDate);
+      setEntityData(data)
+    }
+    loadEntityData();
+  }, [activeDate, reloadToken]);
   useEffect(() => {
     if (!pendingDate) return;
     let cancelled = false;
@@ -222,7 +228,13 @@ function ThreeDayContentGrid({
     return () => {
       cancelled = true;
     };
-  }, [pendingDate, setActiveDate]);
+  }, [pendingDate]);
+  useLayoutEffect(() => { // prevent flicker on horizontal swipe
+    if (!dayDataTrackRef.current) return;
+    dayDataTrackRef.current.style.transition = 'none';
+    dayDataTrackRef.current.style.transform = 'translateX(-100%)';
+  }, [activeDate]);
+
   return (
     <div className={styles.threeDayContentGrid}>
       <StoryFieldLabelCol
