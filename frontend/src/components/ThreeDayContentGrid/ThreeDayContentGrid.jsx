@@ -35,6 +35,8 @@ function ThreeDayContentGrid({
     setActiveDate,
     isCalendarExpanded,
     setIsEditPostExpanded,
+    setEditPostDate,
+    reloadToken,
   }) {
   const [entityData, setEntityData] = useState([]);
   useEffect(() => {
@@ -43,12 +45,11 @@ function ThreeDayContentGrid({
       setEntityData(data)
     }
     loadEntityData();
-  }, [activeDate]);
+  }, [activeDate, reloadToken]);
   const topRowHeight = '50px';
   const addNewRowHeight = '200px';
   const fieldRows = [
     { key: "image_path", label: "img", height: '200px'},
-    // { key: "date", label: "date", height: '50px'},
     { key: "id", label: "id", height: '30px'},
     { key: "notes", label: "notes", height: '120px'},
     { key: "location", label: "filler", height: '600px'},
@@ -242,6 +243,7 @@ function ThreeDayContentGrid({
                 yScrollableRefs.current[i + 1] = el;
               }}
               setIsEditPostExpanded={setIsEditPostExpanded}
+              setEditPostDate={setEditPostDate}
             />
           ))}
         </div>

@@ -11,6 +11,11 @@ function Myapp() {
   const [activeDate, setActiveDate] = useState(today);
   const [isEditPostExpanded, setIsEditPostExpanded] = useState(false);
   const [overlayHeight, setOverlayHeight] = useState(window.innerHeight);
+  const [editPostDate, setEditPostDate] = useState(null);
+  const [reloadToken, setReloadToken] = useState(0);
+  function triggerThreeDayContainerReload() {
+    setReloadToken(cur => cur + 1);
+  }
   const toggleCalendar = () => {
     setIsCalendarExpanded(prev => !prev);
   }
@@ -76,6 +81,8 @@ function Myapp() {
         setActiveDate={setActiveDate}
         isCalendarExpanded={isCalendarExpanded} // conditionally change background color of header
         setIsEditPostExpanded={setIsEditPostExpanded}
+        setEditPostDate={setEditPostDate}
+        reloadToken={reloadToken}
       />
 
       {isEditPostExpanded && (
@@ -86,6 +93,8 @@ function Myapp() {
           <PostForm
             handleOverlayPointerDown={handleOverlayPointerDown}
             setIsEditPostExpanded={setIsEditPostExpanded}
+            initialPostDate={editPostDate}
+            triggerThreeDayContainerReload={triggerThreeDayContainerReload}
           />
         </div>
       )}

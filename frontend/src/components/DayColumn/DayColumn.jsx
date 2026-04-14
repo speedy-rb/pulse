@@ -9,13 +9,17 @@ function DayColumn({
     dayData,
     fieldDataViewportRef,
     setIsEditPostExpanded,
+    setEditPostDate,
   }) {
   const dateObj = dayjs(dayData.post_date);
   const bodyGridTemplateRows = [
     ...fieldRows.map(row => row.height), addNewRowHeight]
     .join(" ");
   const isNoData = dayData.id ? false : true;
-  const openEditPost = () => setIsEditPostExpanded(true);
+  const openEditPost = () => {
+    setIsEditPostExpanded(true);
+    setEditPostDate(dateObj);
+  };
   function renderCellContent(row) {
     if (row.key === 'image_path') {
       if (isNoData) {

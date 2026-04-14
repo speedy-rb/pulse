@@ -6,6 +6,8 @@ import styles from './PostForm.module.css';
 function PostForm({
     handleOverlayPointerDown,
     setIsEditPostExpanded,
+    initialPostDate,
+    triggerThreeDayContainerReload,
   }) {
   // schema of post
     // id
@@ -15,18 +17,16 @@ function PostForm({
     // notes
     // created_at
     // updated_at
-  const defaultPostData = {
-    postDate: null,
+  const [postData, setPostData] = useState({
+    postDate: initialPostDate,
     location: '',
     notes: '',
     image: {
       file: null,
       url: '',
     }
-  };
-  const today = dayjs();
-  const [activeDate, setActiveDate] = useState(today);
-  const [postData, setPostData] = useState(defaultPostData);
+  });
+  const [errors, setErrors] = useState({});
   const hideOverlay = () => setIsEditPostExpanded(false);
   function handleImageChange(e) {
     const file = e.target.files?.[0];
@@ -65,6 +65,51 @@ function PostForm({
   function handleDateClick() {
     setIsCalendarExpanded(cur => !cur);
   }
+  function validatePost(postData) {
+    const errors = {};
+    if (postData.image.file == null) {
+      errors.image = 'You must provide an image';
+    }
+    if (!dayjs.isDayjs(postData.postDate)) {
+      errors.date = 'Invalid date provided'
+    }
+    // location - optional; later maybe validate as url
+    // notes - can be blank
+    return errors;
+  }
+  function submitPostDate() {
+
+  }
+  async function handleClickSave(e) {
+    const validationErrors = validatePost(postData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    } else {
+      setErrors({});
+    }
+    // submit to backend
+    const form = new FormData();
+    form.append('image', postData.image.file);
+    form.append('postDate', postData.postDate.format('YYYY-MM-DD'));
+    form.append('location', postData.location);
+    form.append('notes', postData.notes);
+    const res = await fetch('/api/posts', {
+      method: 'POST',
+      body: form,
+    })
+    if (!res.ok) {
+      const err = await res.json();
+      console.error(err);
+      return;
+    }
+    const data = await res.json();
+    console.log('created post:', data);
+    // reload calendar
+    triggerThreeDayContainerReload();
+    // close overlay
+    setIsEditPostExpanded(false);
+  }
   return (
     <div className={styles.postFormContainer}>
       {/* Sticky Header */}
@@ -84,7 +129,11 @@ function PostForm({
             />
           </svg>
         </div>
-        <button>Save</button>
+        <button
+          onClick={handleClickSave}
+        >
+          Save
+        </button>
       </div>
       {/* Create Post Header */}
       <div className={styles.titleRow}>
@@ -123,7 +172,10 @@ function PostForm({
               onChange={handleImageChange}
               hidden
             />
-          </div>  
+          </div>
+          {errors.image && (
+            <div className={styles.errorText}>{errors.image}</div>
+          )}
         </div>
         {/* Select Date */}
         <div className={styles.formRow}>
@@ -137,9 +189,9 @@ function PostForm({
               onClick={handleDateClick}
               type="button"
             >
-              {activeDate.format('MMM D, YYYY ')}
+              {postData.postDate.format('MMM D, YYYY ')}
               <span className={styles.dayOfWeek}>
-                {activeDate.format('(ddd)')}
+                {postData.postDate.format('(ddd)')}
               </span>
             </button>
           </div>
@@ -147,8 +199,13 @@ function PostForm({
             {isCalendarExpanded ? (
               <div className={styles.calendarContainer}>
                 <Calendar
-                  activeDate={activeDate}
-                  setActiveDate={setActiveDate}
+                  activeDate={postData.postDate}
+                  setActiveDate={(newDate) => {
+                    setPostData(cur => ({
+                      ...cur,
+                      postDate: newDate,
+                    }));
+                  }}
                 />
               </div>
             ) : ''}

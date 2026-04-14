@@ -12,7 +12,7 @@ async function getPostForDate(date) {
   return rows;
 }
 
-async function insertPost(post) {
+async function createNewPost(post) {
   const query = `
     INSERT INTO posts (image_path, post_date, location, notes)
     VALUES ($1, $2, $3, $4)
@@ -30,5 +30,6 @@ async function insertPost(post) {
 
 module.exports = {
   getAllPosts,
-  getPostForDate
+  getPostForDate,
+  createNewPost,
 };
