@@ -39,6 +39,7 @@ function ThreeDayContentGrid({
     reloadToken,
   }) {
   const [entityData, setEntityData] = useState([]);
+  const [pendingDate, setPendingDate] = useState(null);
   useEffect(() => {
     async function loadEntityData() {
       const data = await createEntityData(activeDate);
@@ -199,10 +200,29 @@ function ThreeDayContentGrid({
     if (e.propertyName !== 'transform') return;
     const snapTarget = snapTargetRef.current;
     if (!snapTarget.isSame(activeDate, 'day')) {
-      setActiveDate(snapTarget);
+      setPendingDate(snapTarget);
     }
   }
-
+  useEffect(() => {
+    if (!pendingDate) return;
+    let cancelled = false;
+    async function loadEntityData() {
+      const data = await createEntityData(pendingDate);
+      if (cancelled) return;
+      setEntityData(data)
+      setActiveDate(pendingDate);
+      requestAnimationFrame(() => {
+        if (!dayDataTrackRef.current) return;
+        dayDataTrackRef.current.style.transition = 'none';
+        dayDataTrackRef.current.style.transform = 'translateX(-100%)';
+      });
+      setPendingDate(null);
+    }
+    loadEntityData();
+    return () => {
+      cancelled = true;
+    };
+  }, [pendingDate, setActiveDate]);
   return (
     <div className={styles.threeDayContentGrid}>
       <StoryFieldLabelCol
@@ -233,7 +253,7 @@ function ThreeDayContentGrid({
         >
           {entityData.map((dayData, i) => (
             <DayColumn
-              key={i}
+              key={dayData.post_date}
               topRowHeight={topRowHeight}
               addNewRowHeight={addNewRowHeight}
               isCalendarExpanded={isCalendarExpanded}
