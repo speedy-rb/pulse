@@ -8,6 +8,7 @@ function DayColumn({
     fieldRows,
     dayData,
     fieldDataViewportRef,
+    setIsViewPostExpanded,
     setIsEditPostExpanded,
     setEditPostDate,
   }) {
@@ -36,6 +37,7 @@ function DayColumn({
         <img
           src={`/uploads${dayData[row.key]}`}
           height='100%'
+          onClick={() => setIsViewPostExpanded(true)}
         />
       )
     }

@@ -4,12 +4,14 @@ import dayjs from 'dayjs';
 import Calendar from './Calendar/Calendar';
 import ThreeDayContentGrid from './ThreeDayContentGrid/ThreeDayContentGrid';
 import PostForm from './PostForm/PostForm';
+import PostDetails from './PostDetails/PostDetails';
 
 const today = dayjs();
 function Myapp() {
   const [isCalendarExpanded, setIsCalendarExpanded] = useState(false);
   const [activeDate, setActiveDate] = useState(today);
   const [isEditPostExpanded, setIsEditPostExpanded] = useState(false);
+  const [isViewPostExpanded, setIsViewPostExpanded] = useState(false);
   const [overlayHeight, setOverlayHeight] = useState(window.innerHeight);
   const [editPostDate, setEditPostDate] = useState(null);
   const [reloadToken, setReloadToken] = useState(0);
@@ -75,12 +77,21 @@ function Myapp() {
           />
         )}
       </div>
+      
+      {isViewPostExpanded && (
+        <div className={styles.postDetailsOverlay}>
+          <PostDetails
+            setIsViewPostExpanded={setIsViewPostExpanded}
+          />
+        </div>
+      )}
 
       <ThreeDayContentGrid
         activeDate={activeDate}
         setActiveDate={setActiveDate}
         isCalendarExpanded={isCalendarExpanded} // conditionally change background color of header
         setIsEditPostExpanded={setIsEditPostExpanded}
+        setIsViewPostExpanded={setIsViewPostExpanded}
         setEditPostDate={setEditPostDate}
         reloadToken={reloadToken}
       />

@@ -43,6 +43,7 @@ function ThreeDayContentGrid({
     setActiveDate,
     isCalendarExpanded,
     setIsEditPostExpanded,
+    setIsViewPostExpanded,
     setEditPostDate,
     reloadToken,
   }) {
@@ -275,6 +276,7 @@ function ThreeDayContentGrid({
                 yScrollableRefs.current[i + 1] = el;
               }}
               setIsEditPostExpanded={setIsEditPostExpanded}
+              setIsViewPostExpanded={setIsViewPostExpanded}
               setEditPostDate={setEditPostDate}
             />
           ))}

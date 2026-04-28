@@ -1,0 +1,76 @@
+.viewDetailsContainer {
+  border: 2px solid red;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 20px;
+  padding-top: 10px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--accent-color);
+  padding-top: var(--vertical-padding-field-row);
+  padding-bottom: var(--vertical-padding-field-row);
+  /* border: 1px solid pink; */
+}
+
+.formRow:first-of-type {
+  border-top: 1px solid var(--accent-color)
+}
+
+.fieldHeaderRow {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding-left: var(--horizontal-padding-post-form);
+  padding-right: var(--horizontal-padding-post-form);
+}
+
+.fieldWidgetRow {
+  display: flex;
+  justify-content: center;
+}
+
+.formIconContainer {
+  height: var(--icon-size);
+  width: var(--icon-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(var(--icon-y-offset));
+}
+
+.formIconContainer svg path {
+  fill: white;
+}
+
+.imageBox {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  height: 300px;
+  width: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.imageBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.refImgExpanded {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  background: black;
+  z-index: 102;
+}
