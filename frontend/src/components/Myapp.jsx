@@ -12,6 +12,7 @@ function Myapp() {
   const [activeDate, setActiveDate] = useState(today);
   const [isEditPostExpanded, setIsEditPostExpanded] = useState(false);
   const [isViewPostExpanded, setIsViewPostExpanded] = useState(false);
+  const [editPostMode, setEditPostMode] = useState('create');
   const [overlayHeight, setOverlayHeight] = useState(window.innerHeight);
   const [editPostDate, setEditPostDate] = useState(null);
   const [reloadToken, setReloadToken] = useState(0);
@@ -82,6 +83,12 @@ function Myapp() {
         <div className={styles.postDetailsOverlay}>
           <PostDetails
             setIsViewPostExpanded={setIsViewPostExpanded}
+            dateObj={editPostDate}
+            onClickEditButton={() =>  {
+              setIsViewPostExpanded(false);
+              setIsEditPostExpanded(true);
+              setEditPostMode('edit');
+            }}
           />
         </div>
       )}
@@ -93,6 +100,7 @@ function Myapp() {
         setIsEditPostExpanded={setIsEditPostExpanded}
         setIsViewPostExpanded={setIsViewPostExpanded}
         setEditPostDate={setEditPostDate}
+        setEditPostMode={setEditPostMode}
         reloadToken={reloadToken}
       />
 
@@ -106,6 +114,7 @@ function Myapp() {
             setIsEditPostExpanded={setIsEditPostExpanded}
             initialPostDate={editPostDate}
             triggerThreeDayContainerReload={triggerThreeDayContainerReload}
+            editPostMode={editPostMode}
           />
         </div>
       )}

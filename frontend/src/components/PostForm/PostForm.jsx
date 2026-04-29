@@ -8,6 +8,7 @@ function PostForm({
     setIsEditPostExpanded,
     initialPostDate,
     triggerThreeDayContainerReload,
+    editPostMode,
   }) {
   // schema of post
     // id
@@ -27,6 +28,27 @@ function PostForm({
     }
   });
   const [errors, setErrors] = useState({});
+  useEffect(() => {
+    async function loadPost() {
+      const dateStr = initialPostDate.format('YYYY-MM-DD');
+      const res = await fetch (`/api/posts?date=${dateStr}`);
+      const postArr = await res.json();
+      if (!postArr?.length) {
+        return;
+      }
+      const post = postArr[0];
+      setPostData(prev => ({
+        ...prev,
+        location: post.location,
+        notes: post.notes,
+        image: {
+          file: null,
+          url: `/uploads/${post.image_path}`,
+        }
+      }));
+    }
+    loadPost();
+  }, [])
   const hideOverlay = () => setIsEditPostExpanded(false);
   function handleImageChange(e) {
     const file = e.target.files?.[0];
@@ -139,7 +161,7 @@ function PostForm({
       <div className={styles.titleRow}>
         <div className={styles.formIconContainer}>
           </div>
-        <h2>Create Post</h2>
+        <h2>{editPostMode === 'edit' ? 'Edit Post' : 'Create Post'}</h2>
       </div>
       {/* Form */}
       <form className={styles.postForm}>

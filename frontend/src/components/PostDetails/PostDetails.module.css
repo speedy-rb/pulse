@@ -1,7 +1,3 @@
-.viewDetailsContainer {
-  border: 2px solid red;
-}
-
 .actionBar {
   display: flex;
   justify-content: space-between;

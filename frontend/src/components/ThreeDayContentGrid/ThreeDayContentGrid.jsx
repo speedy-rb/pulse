@@ -45,6 +45,7 @@ function ThreeDayContentGrid({
     setIsEditPostExpanded,
     setIsViewPostExpanded,
     setEditPostDate,
+    setEditPostMode,
     reloadToken,
   }) {
   // state
@@ -278,6 +279,7 @@ function ThreeDayContentGrid({
               setIsEditPostExpanded={setIsEditPostExpanded}
               setIsViewPostExpanded={setIsViewPostExpanded}
               setEditPostDate={setEditPostDate}
+              setEditPostMode={setEditPostMode}
             />
           ))}
         </div>
