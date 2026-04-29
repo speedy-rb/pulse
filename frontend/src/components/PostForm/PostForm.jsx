@@ -18,6 +18,7 @@ function PostForm({
     // notes
     // created_at
     // updated_at
+  const [existingPostId, setExistingPostId] = useState(null);
   const [postData, setPostData] = useState({
     postDate: initialPostDate,
     location: '',
@@ -37,6 +38,7 @@ function PostForm({
         return;
       }
       const post = postArr[0];
+      setExistingPostId(post.id);
       setPostData(prev => ({
         ...prev,
         location: post.location,
@@ -89,7 +91,7 @@ function PostForm({
   }
   function validatePost(postData) {
     const errors = {};
-    if (postData.image.file == null) {
+    if (!postData.image.file && !postData.image.url) {
       errors.image = 'You must provide an image';
     }
     if (!dayjs.isDayjs(postData.postDate)) {
@@ -112,21 +114,24 @@ function PostForm({
     }
     // submit to backend
     const form = new FormData();
-    form.append('image', postData.image.file);
+    if (postData.image.file) {
+      form.append('image', postData.image.file);
+    }
     form.append('postDate', postData.postDate.format('YYYY-MM-DD'));
     form.append('location', postData.location);
     form.append('notes', postData.notes);
-    const res = await fetch('/api/posts', {
-      method: 'POST',
+    const url = editPostMode === 'edit' ? `/api/posts/${existingPostId}` : '/api/posts';
+    const method = editPostMode === 'edit' ? 'PATCH' : 'POST';
+    const res = await  fetch(url, {
+      method,
       body: form,
-    })
+    });
+    const data = await res.json();
     if (!res.ok) {
-      const err = await res.json();
       console.error(err);
       return;
     }
-    const data = await res.json();
-    console.log('created post:', data);
+    console.log(`${editPostMode === 'edit' ? 'edited' : 'created'} post:`, data);
     // reload calendar
     triggerThreeDayContainerReload();
     // close overlay

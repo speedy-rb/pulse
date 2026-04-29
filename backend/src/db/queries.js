@@ -28,8 +28,32 @@ async function createNewPost(post) {
   return rows;
 }
 
+async function updatePost(post) {
+  const query = `
+    UPDATE posts
+    SET
+      image_path = COALESCE($1, image_path),
+      post_date = $2,
+      location = $3,
+      notes = $4,
+      updated_at = NOW()
+    WHERE id = $5
+    RETURNING *;
+  `;
+  const values = [
+    post.imagePath,
+    post.postDate,
+    post.location ?? null,
+    post.notes ?? null,
+    post.id,
+  ];
+  const { rows } = await pool.query(query, values);
+  return rows;
+}
+
 module.exports = {
   getAllPosts,
   getPostForDate,
   createNewPost,
+  updatePost,
 };

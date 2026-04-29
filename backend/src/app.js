@@ -63,6 +63,22 @@ app.post('/api/posts', upload.single('image'), (req, res) => {
     createNewPost(req, res);
 })
 
+async function updatePostController(req, res) {
+    const post = {
+        id: req.params.id,
+        imagePath: req.file ? `/${req.file.filename}` : null,
+        postDate: req.body.postDate,
+        location: req.body.location,
+        notes: req.body.notes,
+    };
+    const rows = await db.updatePost(post);
+    res.json(rows);
+}
+app.patch('/api/posts/:id', upload.single('image'), (req, res) => {
+    updatePostController(req, res);
+});
+
+
 const PORT = 3000;
 app.listen(PORT, (error) => {
     if (error) {
