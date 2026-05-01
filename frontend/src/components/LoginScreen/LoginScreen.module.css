@@ -1,0 +1,110 @@
+.loginScreen {
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--body-background-color);
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+}
+
+.loginHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.loginLogo {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  background: #ff8f8f;
+  color: white;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.loginHeader h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #1f1f1f;
+}
+
+.loginHeader p {
+  margin: 8px 0 26px;
+  color: #666;
+  font-size: 15px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loginField {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.loginField span {
+  font-size: 14px;
+  font-weight: 650;
+  color: #333;
+}
+
+.loginField input {
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  background: white;
+  color: black;
+  font-size: 16px;
+  outline: none;
+}
+
+.loginField input:focus {
+  border-color: #ff8f8f;
+  box-shadow: 0 0 0 4px rgba(255, 143, 143, 0.18);
+}
+
+.loginError {
+  margin: 0;
+  padding: 11px 13px;
+  border-radius: 12px;
+  background: #ffe8e8;
+  color: #b00020;
+  font-size: 14px;
+}
+
+.loginButton {
+  height: 50px;
+  border: none;
+  border-radius: 16px;
+  background: #c93152;
+  color: white;
+  font-size: 16px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.loginButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}

@@ -1,0 +1,17 @@
+CREATE TABLE users (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE posts
+ADD COLUMN user_id INTEGER REFERENCES users(id);
+
+UPDATE posts
+SET user_id = 1
+WHERE user_id IS NULL;
+
+ALTER TABLE posts
+ALTER COLUMN user_id SET NOT NULL;

@@ -1,24 +1,31 @@
 const pool = require("./pool");
 
-async function getAllPosts() {
-  const { rows } = await pool.query("SELECT * FROM posts");
+async function getAllPosts(userId) {
+  const { rows } = await pool.query(`
+      SELECT * FROM posts
+      WHERE user_id = $1
+      ORDER BY post_date ASC;
+  `, [userId]);
   return rows;
 }
 
-async function getPostForDate(date) {
+async function getPostForDate(date, userId) {
   const { rows } = await pool.query(`
-    SELECT * FROM posts WHERE post_date = $1;
-  `, [date]);
+    SELECT * FROM posts
+    WHERE post_date = $1
+      AND user_id = $2;
+  `, [date, userId]);
   return rows;
 }
 
 async function createNewPost(post) {
   const query = `
-    INSERT INTO posts (image_path, post_date, location, notes)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO posts (user_id, image_path, post_date, location, notes)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
   `;
   const values = [
+    post.userId,
     post.imagePath,
     post.postDate,
     post.location ?? null,
@@ -38,6 +45,7 @@ async function updatePost(post) {
       notes = $4,
       updated_at = NOW()
     WHERE id = $5
+      AND user_id = $6
     RETURNING *;
   `;
   const values = [
@@ -46,6 +54,7 @@ async function updatePost(post) {
     post.location ?? null,
     post.notes ?? null,
     post.id,
+    post.userId,
   ];
   const { rows } = await pool.query(query, values);
   return rows;

@@ -7,7 +7,7 @@ import PostForm from './PostForm/PostForm';
 import PostDetails from './PostDetails/PostDetails';
 
 const today = dayjs();
-function Myapp() {
+function Myapp( {setUser} ) {
   const [isCalendarExpanded, setIsCalendarExpanded] = useState(false);
   const [activeDate, setActiveDate] = useState(today);
   const [isEditPostExpanded, setIsEditPostExpanded] = useState(false);
@@ -16,6 +16,16 @@ function Myapp() {
   const [overlayHeight, setOverlayHeight] = useState(window.innerHeight);
   const [editPostDate, setEditPostDate] = useState(null);
   const [reloadToken, setReloadToken] = useState(0);
+  async function logoutUser() {
+    const res = await fetch('/api/logout', {
+      method: 'POST',
+    });
+    if (!res.ok && res.status !== 204) {
+      console.error('Logout failed');
+      return;
+    }
+    setUser(null);
+  }
   function triggerThreeDayContainerReload() {
     setReloadToken(cur => cur + 1);
   }
@@ -68,7 +78,11 @@ function Myapp() {
             </div>
           </div>
           <div className={styles.appHeaderRight}>
-            <img src='pfp-64-64.png' className={styles.pfp} />
+            <img
+              src='pfp-64-64.png'
+              className={styles.pfp}
+              onClick={logoutUser}
+            />
           </div>
         </div>
         {isCalendarExpanded && (
